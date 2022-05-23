@@ -11,6 +11,8 @@ urlpatterns = [
     path('selectmood/active/', views.active, name='active'),
     path('selectmood/relax/', views.relax, name='relax'),
     path('selectmood/sad/', views.sad, name='sad'),
+    path('<int:movie_pk>/', views.detail, name='detail'),
+
     
 
     

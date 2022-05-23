@@ -3,5 +3,25 @@
 {% block content %}
 <h2>joy</h2>
 
+<h3>Movies I Saved...</h3>
+{% comment %} {% for sv in saved  %}
+    <img src="{{ sv.poster_path }}" alt="영화 포스터 이미지">
+    <p>{{ sv.title }}</p>
+    <p>{{ sv.grade }}</p>
+{% endfor %} {% endcomment %}
+
+<h3>Movies We Recommend...</h3>
+{% for movie in movies %}
+<a href="{% url 'movies:detail' movie.pk %}">
+  <article>
+    <img src="{{ movie.poster_path }}" alt="영화 포스터 이미지">
+    <p>{{ movie.title }}</p>
+    <p>{{ movie.grade }}</p>
+  </article>
+</a>
+{% endfor %}
+
+
+
 {% endblock content %}
 

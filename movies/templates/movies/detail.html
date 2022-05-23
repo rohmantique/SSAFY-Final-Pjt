@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>영화 상세 정보 페이지</h2>
+<p>{{ movie.title }}</p>
+<p>{{ movie.release_date }}</p>
+<p>{{ movie.grade }}</p>
+<p>{{ movie.description }}</p>
+<a href="">평가하기</a>
+<form action="" method="POST">
+  {% csrf_token %}
+  <button>저장하기</button>
+</form>
+
+
+
+{% endblock content %}
+
