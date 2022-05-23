@@ -1,0 +1,9 @@
+body {
+  font-family: Helvetica, sans-serif;
+}
+
+.background {
+  width: 400px;
+  max-width: 500px;
+  background: linear-gradient(#28CBFF, rgb(255, 255, 255), #F094FF);
+}

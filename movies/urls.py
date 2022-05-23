@@ -3,7 +3,6 @@ from . import views
 
 app_name = 'movies'
 urlpatterns = [
-    path('', views.home, name='home'),
     path('selectmood/', views.select_mood, name='select_mood'),
     path('index/<str:mood_pk>/', views.index, name='index'),
     path('<str:movie_pk>/', views.detail, name='detail'),
