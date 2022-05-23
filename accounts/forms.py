@@ -6,6 +6,7 @@ from django.contrib.auth.forms import (
 from django.contrib.auth import get_user_model
 
 from django import forms
+
 User = get_user_model()
 
 class CustomUserCreationForm(UserCreationForm):
@@ -24,3 +25,9 @@ class CustomUserCreationForm(UserCreationForm):
 
 class CustomAuthenticationForm(AuthenticationForm):
     pass
+
+class CustomProfileForm(forms.ModelForm):
+
+    class Meta():
+        model = User
+        fields = ('nickname', 'image', )
