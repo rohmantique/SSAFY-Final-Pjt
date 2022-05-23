@@ -7,10 +7,5 @@ urlpatterns = [
     path('index/<str:mood_pk>/', views.index, name='index'),
     path('<str:movie_pk>/', views.detail, name='detail'),
     path('<str:movie_pk>/create/', views.create, name='create'), #리뷰작성
-    
-
-
-    
-
-    
+  
 ]
