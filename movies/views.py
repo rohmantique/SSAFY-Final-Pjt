@@ -24,6 +24,7 @@ def select_mood(request):
     # return render(request, 'movies/select_mood.html', context)
     return render(request, 'movies/select_mood.html')
 
+
 def index(request, mood_pk):
 
     mood = {
@@ -32,16 +33,23 @@ def index(request, mood_pk):
         '3' : ['Documentary', 'History', 'Family', 'Romance', ],
         '4' : ['Music', 'Tv Movie', ],
         '5' : ['Adventure', 'Comedy', 'Fantasy', 'Romance', ],
-        '6' : ['Action', 'Western', 'Science', 'Fiction', 'Fantasy', ],
+        '6' : ['Action', 'Western', 'Science Fiction', 'Fantasy', ],
         '7' : ['Thriller', 'War', 'Science Fiction', 'Horror', ]
     }
 
-    # mood[f'{mood_pk}'] = Movie.objects.filter(genres=f'{}')
+    data = []
+    movies = Movie.objects.all().order_by('-grade')
+    for genre in mood[f'{mood_pk}']:
+        for movie in movies:
+            if genre in movie.genres:
+                data.append(movie)
 
+    context = {
+        'data': data,
+    }
 
+    return render(request, 'movies/index.html', context)
 
-    
-    return render(request, 'movies/index.html')
 
 def joy(request):
 
