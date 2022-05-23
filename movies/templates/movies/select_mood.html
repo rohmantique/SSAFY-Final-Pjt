@@ -21,25 +21,5 @@
     <li><a href="{% url 'movies:index' '7' %}">울고 싶은</a></li>
   </ul>
 
-{% block script %}
-  <script>
-    function movepage(status) {
-      location.href = status;
-    }
-    const statusbtn = document.getElementById('statuslist');
-    selectTab.addEventListener('change', function () {
-      const move = selectTab.options[selectTab.selectedIndex].value;
-      if (move != 'x') {
-        window.open(move)
-        document.getElementById("slct").selected = 'true';
-      }
-    })
-
-
-
-  </script>
-
-{% endblock script %}
-
 {% endblock content %}
 

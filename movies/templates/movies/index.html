@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>감정에 따라 선택된 영화들을 보여주기</p>
+<div>
+  {% for movie in data %}
+    영화제목: {{ movie.title }}
+    개봉년도: {{ movie.realse_date }}
+    포스터: {{ movie.poster_path }}
+  {% endfor %}
+</div>
+{% endblock content %}
+
