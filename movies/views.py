@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from .forms import MoodForm
+from .forms import MoodForm, ReviewForm
 import requests
 import random
 from pprint import pprint
@@ -24,12 +24,29 @@ def select_mood(request):
     # return render(request, 'movies/select_mood.html', context)
     return render(request, 'movies/select_mood.html')
 
-def selected_mood(request, mood_pk):
+def index(request, mood_pk):
+
+    mood = {
+        '1' : ['Drama', 'Family', 'Fantasy' ], 
+        '2' : ['Family', 'Adventure', 'Fantasy', ],
+        '3' : ['Documentary', 'History', 'Family', 'Romance', ],
+        '4' : ['Music', 'Tv Movie', ],
+        '5' : ['Adventure', 'Comedy', 'Fantasy', 'Romance', ],
+        '6' : ['Action', 'Western', 'Science', 'Fiction', 'Fantasy', ],
+        '7' : ['Thriller', 'War', 'Science Fiction', 'Horror', ]
+    }
+
+    # mood[f'{mood_pk}'] = Movie.objects.filter(genres=f'{}')
+
+
+
     
-    return render(request, 'movies/selected_mood.html')
+    return render(request, 'movies/index.html')
 
 def joy(request):
-    movies = Movie.objects.order_by('grade')[:10]
+
+    
+    # movies = Movie.objects.filter(genres=)
 
     # saved = Movie.objects.get('bookmark')
 
@@ -61,3 +78,21 @@ def detail(request, movie_pk):
         'movie': movie,
     }
     return render(request, 'movies/detail.html', context)
+
+def create(request, movie_pk):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+
+            review.user = request.user
+            review.save()
+
+            return redirect('movies:detail', movie_pk)
+    else:
+        form = ReviewForm()
+    
+    context = {
+        'form': form,
+    }
+    return render(request, 'movies/create.html', context)
