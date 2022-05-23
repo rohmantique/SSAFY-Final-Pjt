@@ -6,7 +6,7 @@
 <p>{{ movie.release_date }}</p>
 <p>{{ movie.grade }}</p>
 <p>{{ movie.description }}</p>
-<a href="">평가하기</a>
+<a href="{% url 'movies:create' movie.pk %}">평가하기</a>
 <form action="" method="POST">
   {% csrf_token %}
   <button>저장하기</button>

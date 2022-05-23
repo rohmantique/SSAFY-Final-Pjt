@@ -1,5 +1,5 @@
 from django import forms
-from . models import Mood
+from . models import Mood, Review
 
 class MoodForm(forms.ModelForm):
     status = forms.ChoiceField(
@@ -21,3 +21,15 @@ class MoodForm(forms.ModelForm):
     class Meta:
         model = Mood
         fields = ('status', )
+
+class ReviewForm(forms.Form):
+    content = forms.TextInput(
+        attrs = {
+            'class': 'form-control',
+        }
+    )
+    score = forms.FloatField()
+
+    class Mega:
+        model = Review
+        fields = ('content', 'score', )

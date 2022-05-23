@@ -14,7 +14,7 @@
 {% for movie in movies %}
 <a href="{% url 'movies:detail' movie.pk %}">
   <article>
-    <img src="{{ movie.poster_path }}" alt="영화 포스터 이미지">
+    <img style="width: 200px;" src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" alt="영화 포스터 이미지">
     <p>{{ movie.title }}</p>
     <p>{{ movie.grade }}</p>
   </article>

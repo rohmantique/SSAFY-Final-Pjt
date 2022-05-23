@@ -10,25 +10,16 @@
   {{ form.as_p }}
 </form>
 -->
-
-<!--
-  <select name="statuslist" id="status" onChnage="window.open(value,'_self');">
-    <option value="x" selected="selected" id="slct">---선택---</option>
-    <option value="{% url 'movies:joy' %}" id='joy'>기쁜</option>
-    <option value="gloomy" id='gloomy'>우울한</option>
-    <option value="active" id='active'>활기찬</option>
-    <option value="relax" id='relax'>진정이 필요한</option>
-    <option value="sad" id='sad'>울고 싶은</option>
-  </select>
-  -->
-
-  <a href="{% url 'movies:joy' %}">기쁜</a>
-  <a href="{% url 'movies:gloomy' %}">우울한</a>
-  <a href="{% url 'movies:active' %}">활기찬</a>
-  <a href="{% url 'movies:relax' %}">진정이 필요한</a>
-  <a href="{% url 'movies:sad' %}">울고 싶은</a>
-
-
+  <ul>
+    <li><p>I am</p></li>
+    <li><a href="{% url 'movies:index' '1' %}">Happy</a></li>
+    <li><a href="{% url 'movies:index' '2' %}">Hungry</a></li>
+    <li><a href="{% url 'movies:index' '3' %}"></a></li>
+    <li><a href="{% url 'movies:index' '4' %}">진정이 필요한</a></li>
+    <li><a href="{% url 'movies:index' '5' %}">울고 싶은</a></li>
+    <li><a href="{% url 'movies:index' '6' %}">울고 싶은</a></li>
+    <li><a href="{% url 'movies:index' '7' %}">울고 싶은</a></li>
+  </ul>
 
 {% block script %}
   <script>
