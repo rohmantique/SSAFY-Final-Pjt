@@ -1,11 +1,14 @@
-from django.shortcuts import redirect, render
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 
-from accounts.forms import CustomUserCreationForm
+from accounts.forms import CustomProfileForm, CustomUserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import (
     login as auth_login,
     logout as auth_logout,
 )
+
+from .models import User
 
 # Create your views here.
 def signup(request):
@@ -14,7 +17,7 @@ def signup(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect('')
+            return redirect('movies:select_mood')
     else:
         form = CustomUserCreationForm()
 
@@ -31,21 +34,64 @@ def login(request):
             user = form.get_user()
             auth_login(request, user)
             next_url = request.GET.get('next')
-            return redirect(next_url) #or reviews:reviews 로 리다이렉트 (추후 작성)
+            return redirect(next_url or 'movies:select_mood')
     else:
         form = AuthenticationForm()
     
     context = {
         'form': form,
     }
-
     return render(request, 'accounts/login.html', context)
 
 def logout(request):
     auth_logout(request)
-    return redirect('') #무비홈으로 리다이렉트
+    return redirect('movies:home')
+
+def profile(request, username):
+    person = get_object_or_404(User, username=username)
+    # person = User.objects.filter(username=username)
+    context = {
+        'person': person,
+        # 'profile_status': profile_status,
+    }
+    return render(request, 'accounts/profile.html', context)
+
+def create_profile(request, username):
+    if request.method == 'POST':
+        form = CustomProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save(commit=False)
+            return redirect('accounts:profile', username)
+    else:
+        form = CustomProfileForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'accounts/create_profile.html', context)
+
+def update_profile(request, username):
+    pass
 
 
+def follow(request, user_pk):
+    user = get_object_or_404(User, pk=user_pk)
+    you = request.user
+    response = {
+        'followed': False,
+        'count': 0
+    }
 
-  
+    if user.followers.filter(pk=you.pk).exists():
+        user.followers.remove(you)
+        response['followed'] = False
+    else:
+        user.followers.add(you)
+        response['followed'] = True
+
+    response['count'] = user.followers.count()
+
+    return JsonResponse(response)
+    
+
 

@@ -12,7 +12,7 @@ class Movie(models.Model):
     release_date = models.DateField() #개봉일
     grade = models.IntegerField() #평점
     genres = models.CharField(max_length=50) #장르
-    mood = models.ManyToManyField(Mood)
+    mood = models.ManyToManyField(Mood, blank=True)
     descpription = models.TextField() #줄거리
     poster_path = models.CharField(max_length=300) #포스터 이미지 경로
     bookmark = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='saved') #북마크영화

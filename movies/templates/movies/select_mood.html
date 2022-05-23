@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<header>
+  <h2>오늘의 기분은?💭</h2>
+</header>
+<!-- 
+<form action="" method="POST" name='form'>
+  {% csrf_token %}
+  {{ form.as_p }}
+</form>
+-->
+
+<!--
+  <select name="statuslist" id="status" onChnage="window.open(value,'_self');">
+    <option value="x" selected="selected" id="slct">---선택---</option>
+    <option value="{% url 'movies:joy' %}" id='joy'>기쁜</option>
+    <option value="gloomy" id='gloomy'>우울한</option>
+    <option value="active" id='active'>활기찬</option>
+    <option value="relax" id='relax'>진정이 필요한</option>
+    <option value="sad" id='sad'>울고 싶은</option>
+  </select>
+  -->
+
+  <a href="{% url 'movies:joy' %}">기쁜</a>
+  <a href="{% url 'movies:gloomy' %}">우울한</a>
+  <a href="{% url 'movies:active' %}">활기찬</a>
+  <a href="{% url 'movies:relax' %}">진정이 필요한</a>
+  <a href="{% url 'movies:sad' %}">울고 싶은</a>
+
+
+
+{% block script %}
+  <script>
+    function movepage(status) {
+      location.href = status;
+    }
+    const statusbtn = document.getElementById('statuslist');
+    selectTab.addEventListener('change', function () {
+      const move = selectTab.options[selectTab.selectedIndex].value;
+      if (move != 'x') {
+        window.open(move)
+        document.getElementById("slct").selected = 'true';
+      }
+    })
+
+
+
+  </script>
+
+{% endblock script %}
+
+{% endblock content %}
+

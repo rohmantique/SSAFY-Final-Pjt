@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+<!-- 자바스크립트 구현 not yet -->
+{% block content %}
+  <h2>{{ person.username }}님의 프로필 페이지</h2>
+
+  <!-- 프로필 이미지 설정하는 form 넣기 -->
+  <a href="{% url 'accounts:create_profile' user %}">프로필 설정하기</a>
+  {{ person }}
+  
+  {% with followings=person.followings.all followers=person.followers.all %}
+    <div>
+      <div>
+        팔로잉: {{ followings | length }} | 팔로워: {{ followers | length }}
+      </div>
+      {% if request.user != person %}
+        <div>
+          <form action="{% url 'accounts:follow' person.pk %}">
+            {% csrf_token %}
+            {% if request.user in followers %}
+            <button>Unfollow</button>
+            {% else %}
+            <button>Follow</button>
+            {% endif %}
+          </form>
+        </div>
+      {% endif %}
+    </div>
+  {% endwith %}
+
+
+{% endblock content %}
+
