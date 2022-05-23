@@ -34,20 +34,8 @@ INSTALLED_APPS = [
     'accounts',
     'movies',
 
-    # 'dango_extensions',
-    'django_seed',
-
-    # dj-rest-auth
+    'bootstrap5',
     'rest_framework',
-    'rest_framework.authtoken',
-    'dj_rest_auth',
-
-    # 'dj-rest-auth[with_social]'
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'dj_rest_auth.registration',
 
     'django.contrib.admin',
     'django.contrib.auth',
