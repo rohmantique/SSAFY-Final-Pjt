@@ -2,13 +2,13 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from accounts.forms import CustomProfileForm, CustomUserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import (
     login as auth_login,
     logout as auth_logout,
 )
 
 from .models import User
+from .forms import CustomAuthenticationForm
 
 # Create your views here.
 def signup(request):
@@ -26,26 +26,29 @@ def signup(request):
     }
     return render(request, 'accounts/signup.html', context)
             
+
 def login(request):
 
     if request.method == 'POST':
-        form = AuthenticationForm(request, request.POST)
+        form = CustomAuthenticationForm(request, request.POST)
         if form.is_valid():
             user = form.get_user()
             auth_login(request, user)
             next_url = request.GET.get('next')
             return redirect(next_url or 'movies:select_mood')
     else:
-        form = AuthenticationForm()
+        form = CustomAuthenticationForm()
     
     context = {
         'form': form,
     }
     return render(request, 'accounts/login.html', context)
 
+
 def logout(request):
     auth_logout(request)
     return redirect('movies:home')
+
 
 def profile(request, username):
     person = get_object_or_404(User, username=username)
@@ -55,6 +58,7 @@ def profile(request, username):
         # 'profile_status': profile_status,
     }
     return render(request, 'accounts/profile.html', context)
+
 
 def create_profile(request, username):
     if request.method == 'POST':
@@ -69,6 +73,7 @@ def create_profile(request, username):
         'form': form,
     }
     return render(request, 'accounts/create_profile.html', context)
+
 
 def update_profile(request, username):
     pass

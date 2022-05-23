@@ -1,13 +1,51 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<h2>Login Page</h2>
+{% load static %}
 
-<form action="" method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button>Login</button>
-</form>
+{% block style %}
+  .background {
+    background: linear-gradient(#28CBFF, white 40%, white 60%, #F094FF)
+  }
+
+  p {
+    color: #C51CC9;
+    font-size: 14px;
+    margin-top: 16px;
+    margin-bottom: 5px;
+  }
+
+  .logo {
+    width: 92px;
+    position: absolute;
+    left: 80px;
+    top: 257px;
+  }
+
+  .width-control {
+    width: 218px;
+    {% comment %} position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%); {% endcomment %}
+    margin-top: 22px;
+  }
+{% endblock style %}
+
+{% block content %}
+  <img src="{% static 'images/dripping.png' %}" alt="dripping effect" class="img-fluid">
+  <div class="">
+    <img src="{% static 'images/logo.png' %}" alt="logo image" class="logo img-fluid">
+  </div>
+  <h1 class="text-center pt-0 mt-0">MoodInside</h1>
+  <div class="d-flex justify-content-center">
+    <form action="" method="POST" class="width-control">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="button" style="float: right;">Login</button>
+    </form>
+    <div>
+      <a href="{% url 'accounts:signup' %}" class="button">Create account</a>
+    </div>
+  </div>
 {% endblock content %}
 
 

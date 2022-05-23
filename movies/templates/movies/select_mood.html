@@ -1,24 +1,34 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% block style %}
+  .background {
+    background: linear-gradient(#28CBFF, white 40%, white 60%, #F094FF)
+  }
+
+  p, a {
+    color: #5200FF !important;
+    text-decoration: none;
+  }
+{% endblock style %}
+
 {% block content %}
-<header>
-  <h2>오늘의 기분은?💭</h2>
-</header>
-<!-- 
-<form action="" method="POST" name='form'>
-  {% csrf_token %}
-  {{ form.as_p }}
-</form>
--->
-  <ul>
-    <li><p>I am</p></li>
-    <li><a href="{% url 'movies:index' '1' %}">Happy</a></li>
-    <li><a href="{% url 'movies:index' '2' %}">Hungry</a></li>
-    <li><a href="{% url 'movies:index' '3' %}"></a></li>
-    <li><a href="{% url 'movies:index' '4' %}">진정이 필요한</a></li>
-    <li><a href="{% url 'movies:index' '5' %}">울고 싶은</a></li>
-    <li><a href="{% url 'movies:index' '6' %}">울고 싶은</a></li>
-    <li><a href="{% url 'movies:index' '7' %}">울고 싶은</a></li>
+  <img src="{% static 'images/dripping_others.png' %}" alt="dripping effect" class="img-fluid">
+  <header class="mb-5">
+    <h2>How's your mood</h2>
+    <h2>today?</h2>
+  </header>
+
+  <p>I am...</p>
+  <ul class="list-unstyled">
+    <li><a href="{% url 'movies:index' '1' %}">happy</a></li>
+    <li><a href="{% url 'movies:index' '2' %}">hungry</a></li>
+    <li><a href="{% url 'movies:index' '3' %}">low</a></li>
+    <li><a href="{% url 'movies:index' '4' %}">chill</a></li>
+    <li><a href="{% url 'movies:index' '5' %}">bored</a></li>
+    <li><a href="{% url 'movies:index' '6' %}">stressed</a></li>
+    <li><a href="{% url 'movies:index' '7' %}">savage</a></li>
   </ul>
 
 {% endblock content %}

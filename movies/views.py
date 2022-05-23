@@ -6,9 +6,6 @@ from pprint import pprint
 from .models import Movie
 
 # Create your views here.
-def home(request):
-    return render(request, 'movies/home.html')
-
 def select_mood(request):
     # if request.method == 'POST':
     #     form = MoodForm(request.POST)
@@ -50,34 +47,6 @@ def index(request, mood_pk):
 
     return render(request, 'movies/index.html', context)
 
-
-def joy(request):
-
-    
-    # movies = Movie.objects.filter(genres=)
-
-    # saved = Movie.objects.get('bookmark')
-
-    context = {
-        'movies': movies,
-        # 'saved' : saved,
-    }
-
-    return render(request, 'movies/joy.html', context)
-
-def gloomy(request):
-
-    return render(request, 'movies/gloomy.html')
-
-def active(request):
-   
-    return render(request, 'movies/active.html',)
-
-def relax(request):
-    return render(request, 'movies/relax.html')
-
-def sad(request):
-    return render(request, 'movies/sad.html')
 
 def detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
