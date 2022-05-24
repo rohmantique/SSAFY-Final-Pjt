@@ -14,14 +14,6 @@
 {% endblock style %}
 
 {% block content %}
-  <nav>
-    <ul>
-      {% if request.user.is_authenticated %}
-      <a href="{% url 'accounts:profile' user.username %}">My Profile</a>
-      {% else %}
-      {% endif %}
-    </ul>
-  </nav>
 
   <h2 class="m-2">We recommend ...</h2>
   <div class="container font">

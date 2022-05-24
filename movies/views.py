@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .forms import MoodForm, ReviewForm
 import random
 from pprint import pprint
-from .models import Movie
+from .models import Movie, Review
 import random
 
 # Create your views here.
@@ -63,25 +63,6 @@ def detail(request, mood_pk, movie_pk):
     print(f'mood_pk')
     return render(request, 'movies/detail.html', context)
 
-def create(request, movie_pk):
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-
-            review.user = request.user
-            review.movie = Movie.objects.get(pk=movie_pk)
-            review.save()
-
-            return redirect('movies:detail', movie_pk)
-    else:
-        form = ReviewForm()
-    
-    context = {
-        'form': form,
-    }
-    return render(request, 'movies/create.html', context)
-
 def save(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     user = request.user
@@ -100,3 +81,33 @@ def save(request, movie_pk):
     response['count'] = movie.bookmark.count()
     return JsonResponse(response)
     # return redirect('movies:detail', movie_pk)
+
+def create(request, mood_pk, movie_pk):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+
+            review.user = request.user
+            review.movie = Movie.objects.get(pk=movie_pk)
+            review.save()
+
+            return redirect('movies:detail', mood_pk, movie_pk)
+    else:
+        form = ReviewForm()
+    
+    context = {
+        'form': form,
+        'mood_pk': mood_pk,
+    }
+    return render(request, 'movies/create.html', context)
+
+def read(request, mood_pk, movie_pk):
+    review = Review.objects.get(pk=movie_pk).order_by('-created_at')
+
+    context = {
+        'review': review,
+        'mood_pk': mood_pk,
+        # 'movie_pk': movie_pk,
+    }
+    return render(request, 'movies/read.html', context)
