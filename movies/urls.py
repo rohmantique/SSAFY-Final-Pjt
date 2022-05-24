@@ -10,7 +10,7 @@ urlpatterns = [
     path('create/<str:movie_pk>/', views.create, name='create'),
     path('read/<str:review_pk>/', views.read, name='read'),
     path('update/<str:review_pk>/', views.update, name='update'),
-    # path('delete/<str:mood_pk>/<str:movie_pk>/', views.delete, name='delete'),
+    path('delete/<str:review_pk>/', views.delete, name='delete'),
 
     # 감정별 영화 추천
     path('index/<str:mood_pk>/', views.index, name='index'),
