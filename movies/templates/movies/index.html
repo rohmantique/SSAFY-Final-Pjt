@@ -9,10 +9,6 @@
     padding: 0 28px;
   }
 
-  h2 {
-    font-size: 20px;
-  }
-
   a, a:focus, a:active, a:hover {
     padding: 0 6px !important;
   }
@@ -42,7 +38,7 @@
 {% block content %}
   <div class="box-width-control mb-5">
     {% if saved|length != 0 %}
-      <h2 class="mt-4 mb-3">Movies you saved for today...</h2>
+      <h3 class="mt-4 mb-3">Movies you saved for today...</h3>
       <div class="row row-cols-3 px-1 gy-4">
         {% for saved_movie in saved %}
           <a href="{% url 'movies:detail' saved_movie.pk %}">
@@ -51,7 +47,7 @@
                 <img src="https://image.tmdb.org/t/p/original{{ saved_movie.poster_path }}" class="card-img-top p-1" alt="포스터 이미지">
                 <div class="card-body">
                   <p class="card-title">{{ saved_movie.title }}</p>
-                  <p class="card-text">⭐ {{ saved_movie.vote_average }}</p>
+                  <p class="card-text"><i class="bi bi-star-fill me-1"></i>{{ saved_movie.vote_average }}</p>
                 </div>
               </div>
             </div>
@@ -59,7 +55,7 @@
         {% endfor %}
       </div>
     {% endif %}
-    <h2 class="mt-4 mb-3">We recommend ...</h2>
+    <h3 class="mt-4 mb-3">We recommend ...</h3>
     <div class="row row-cols-3 px-1 gy-4">
       {% for movie in data %}
         <a href="{% url 'movies:detail' movie.pk %}">
@@ -68,7 +64,7 @@
               <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top p-1" alt="포스터 이미지">
               <div class="card-body">
                 <p class="card-title">{{ movie.title }}</p>
-                <p class="card-text">⭐ {{ movie.vote_average }}</p>
+                <p class="card-text"><i class="bi bi-star-fill me-1"></i>{{ movie.vote_average }}</p>
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST, require_GET, require_http_methods
 
 from .models import Movie, Review
 from .forms import ReviewForm
@@ -22,6 +23,7 @@ def select_mood(request):
     return render(request, 'movies/select_mood.html')
 
 
+@require_GET
 def index(request, mood_pk):
 
     mood = {
@@ -61,10 +63,10 @@ def index(request, mood_pk):
     return render(request, 'movies/index.html', context)
 
 
+@require_GET
 def detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
 
-    # 장르 문자열 처리
     i = 0
     genres = []
     while i + 1 < len(movie.genres):
@@ -81,39 +83,41 @@ def detail(request, movie_pk):
     else:
         genre = genres[0]
 
-    # vote_count 쉼표 추가
     total = format(movie.vote_count, ',')
+
+    reviews = Review.objects.filter(movie=movie).order_by('-created_at')
 
     context = {
         'movie': movie,
         'genre': genre,
         'total': total,
+        'reviews': reviews,
     }
 
     return render(request, 'movies/detail.html', context)
 
 
+@require_POST
 def save(request, movie_pk):
-    movie = get_object_or_404(Movie, pk=movie_pk)
-    user = request.user
+    if request.user.is_authenticated:
+        movie = get_object_or_404(Movie, pk=movie_pk)
+        user = request.user
 
-    response = {
-        'saved': False,
-        'count': 0,
-    }
+        response = {
+            'saved': False,
+        }
 
-    if movie.bookmark.filter(pk=user.pk).exists():
-        movie.bookmark.remove(user)
-    else:
-        movie.bookmark.add(user)
-        response['saved'] = True
+        if movie.bookmark.filter(pk=user.pk).exists():
+            movie.bookmark.remove(user)
+        else:
+            movie.bookmark.add(user)
+            response['saved'] = True
 
-    response['count'] = movie.bookmark.count()
-
-    # return JsonResponse(response)
-    return redirect('movies:detail', movie_pk)
+        return JsonResponse(response)
+    return redirect('accounts:login')
 
 
+@login_required
 def create(request, movie_pk):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -122,6 +126,12 @@ def create(request, movie_pk):
 
             review.user = request.user
             review.movie = Movie.objects.get(pk=movie_pk)
+
+            movie = Movie.objects.get(pk=movie_pk)
+            movie.vote_average = round((movie.vote_average * movie.vote_count + review.score) / (movie.vote_count + 1), 1)
+            movie.vote_count += 1
+            movie.save()
+
             review.save()
 
             return redirect('movies:detail', movie_pk)
@@ -145,13 +155,22 @@ def read(request, review_pk):
     return render(request, 'movies/read.html', context)
 
 
+@login_required
 def update(request, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
+
+    movie = Movie.objects.get(pk=review.movie.pk)
+    movie.vote_average = round((movie.vote_average * movie.vote_count - review.score) / (movie.vote_count - 1), 1)
+    if movie.vote_average < 0: movie.vote_average = 0.0
 
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
             form.save()
+
+            movie.vote_average = round((movie.vote_average * movie.vote_count + review.score) / (movie.vote_count + 1), 1)
+            movie.save()
+
             return redirect('movies:read', review_pk)
     else:
         form = ReviewForm(instance=review)
@@ -164,8 +183,15 @@ def update(request, review_pk):
 @login_required
 def delete(request, review_pk):
     if not request.user.is_authenticated:
-        return HttpResponse('Not autorized')
+        return HttpResponse('Not authorized')
 
     review = get_object_or_404(Review, pk=review_pk)
+    
+    movie = Movie.objects.get(pk=review.movie.pk)
+    movie.vote_average = round((movie.vote_average * movie.vote_count - review.score) / (movie.vote_count - 1), 1)
+    if movie.vote_average < 0: movie.vote_average = 0.0
+    movie.vote_count -= 1
+    
     review.delete()
+    movie.save()
     return redirect('movies:select_mood')

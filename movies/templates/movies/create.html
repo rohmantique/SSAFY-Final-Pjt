@@ -1,13 +1,41 @@
 {% extends 'base.html' %}
 
+{% block style %}
+  .background {
+    background: linear-gradient(#28CBFF, white 40%, white 65%, #F094FF)
+  }
+
+  textarea {
+    height: 50px !important;
+    border: none !important;
+    outline: none !important;
+    background-color: #F094FF !important;
+  }
+
+  input {
+    border: none !important;
+    width: 70px !important;
+    background-color: #F094FF !important;
+  }
+
+  label {
+    color: #C51CC9;
+  }
+
+  button {
+    color: #800083 !important;
+    padding: 0 10px !important;
+  }
+{% endblock style %}
+
 {% block content %}
-<h2 class="m-2">리뷰 작성 페이지</h2>
+  <div class="px-4 mt-4">
+    <h2 class="mt-2 mb-5">Share your thoughts.</h2>
 
-<form action="" method="POST">
-{% csrf_token %}
-{{ form.as_p }}
-<button>작성완료</button>
-</form>
-
+    <form action="" method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn" style="float:right">Submit</button>
+      </form>
+  </div>
 {% endblock content %}
-

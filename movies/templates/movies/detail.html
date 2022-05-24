@@ -46,6 +46,32 @@
     color: #3F3F3F;
     font-size: 14px;
   }
+
+  .btn-color {
+    color: #3F3F3F;
+  }
+
+  .review-created {
+    font-size: 10px;
+    color: #747474;
+  }
+
+  .review-writer {
+    font-size: 15px;
+    color: #747474;
+    font-weight: bold;
+  }
+
+  .review-score {
+    color: #747474;
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  .review-content {
+    font-size: 14px;
+    color: #3F3F3F;
+  }
 {% endblock style %}
 
 {% block content %}
@@ -66,37 +92,172 @@
     </div>
 
     <div class="border-bottom py-1 d-flex align-items-end">
-      <span class="ratings align-self-end ms-1">⭐ {{ movie.vote_average }}
+      <span class="ratings align-self-end ms-1"><i class="bi bi-star-fill me-1"></i>{{ movie.vote_average }}
         <small class="review-count">({{ total }})</small>
       </span>
     </div>
 
-    <div class="buttons my-3">
-      <a href="{% url 'movies:create' movie.pk %}">평가하기</a>
-      <form action="{% url 'movies:save' movie.pk %}" method="POST">
-        {% csrf_token %}
-        <button>저장하기</button>
-      </form>
+    <div class="d-flexbuttons my-3">
+      <div class="d-flex flex-column justify-content-center">
+        <div class="review-button">
+          <a href="{% url 'movies:create' movie.pk %}">
+            <i class="bi bi-star btn-color"></i>
+          </a>
+        </div>
+        <div>Rate this film</div>
+      </div>
+      <div class="save-button">
+        <form action="{% url 'movies:save' movie.pk %}" method="POST" class="save-form" data-movie-id="{{ movie.pk }}">
+          {% csrf_token %}
+          {% if user in movie.bookmark.all %}
+            <div>
+              <button class="btn btn-color" id="save-{{ movie.pk }}">
+                <i class="bi bi-check-circle-fill btn-color"></i>
+              </button>
+            </div>
+            <div>
+              <div>Already saved</div>
+            </div>
+          {% else %}
+            <div>
+              <button class="btn btn-color" id="save-{{ movie.pk }}">
+                <i class="bi bi-plus-circle-dotted btn-color"></i>
+              </button>
+            </div>
+            <div>
+              <div>Save this film</div>
+            </div>
+          {% endif %}
+        </form>
+      </div>
     </div>
 
     <div class="overview mb-5 mt-3">
-      <h4 class="section-header">Overview</h4>
+      <h4 class="section-header mb-3">Overview</h4>
       <p class="section-content">{{ movie.description }}</p>
     </div>
 
     <div class="reviews">
       <h4 class="section-header">Reviews</h4>
-      {% for review in movie.review_set.all %}
-        <div class="d-flex justify-content-around">
-          <p>{{ review.score }}</p> | <p>{{ review.user }}</p>
+      {% for review in reviews %}
+        <div class="mb-3 mt-3">
+          <div class="review-header d-flex justify-content-between">
+            <div class="review-score">
+              {% if review.score == 1 %}
+                <i class="bi bi-star-half"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                {{ review.score }}
+              {% elif review.score == 2 %}
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                {{ review.score }}
+              {% elif review.score == 3 %}
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                {{ review.score }}
+              {% elif review.score == 4 %}
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>              
+                {{ review.score }}
+              {% elif review.score == 5 %}
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>      
+                {{ review.score }}
+              {% elif review.score == 6 %}
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                {{ review.score }}      
+              {% elif review.score == 7 %}
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>   
+                <i class="bi bi-star"></i>         
+                {{ review.score }}
+              {% elif review.score == 8 %}
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star"></i>
+                {{ review.score }}
+              {% elif review.score == 9 %}
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+                {{ review.score }}
+              {% else %}
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                {{ review.score }}
+              {% endif %}
+            </div>
+            <div class="d-flex align-items-baseline">
+              <div class="review-created me-2">{{ review.created_at|date:"Y-m-d" }}</div>
+              <div class="review-writer">{{ review.user.nickname }}</div>
+            </div>
+          </div>
+          <div class="review-content">{{ review.content }}</div>
         </div>
-        <p class="section-content">{{ review.content }}</p>
       {% endfor %}
     </div>
   </div>
 
-
-
-
-
 {% endblock content %}
+
+{% block script %}
+  <script>
+    function updateBookmarkStatus(movieId, saved) {
+      const saveBtn = document.querySelector(`#save-${movieId}>i`)
+      saveBtn.classList = ''
+      if (saved) {saveBtn.classList.add("bi", "bi-check-circle-fill", "btn-color")}
+      else {saveBtn.classList.add("bi", "bi-plus-circle-dotted", "btn-color")}
+    }
+
+    async function onSubmit(event) {
+      event.preventDefault()
+
+      const movieId = event.target.dataset.movieId
+      const url = `http://127.0.0.1:8000/movies/${movieId}/save/`
+
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      const config = {
+        headers: {'X-CSRFToken': csrftoken},
+      }
+
+      const response = await axios.post(url, {}, config)
+      const { saved } = response.data
+      updateBookmarkStatus(movieId, saved)
+    }
+
+    function attachEvent(form) {
+      form.addEventListener('submit', onSubmit)
+    }
+
+    const formList = document.querySelector('.save-form')
+    formList.forEach(attachEvent)
+  </script>
+{% endblock script %}

@@ -1,15 +1,22 @@
 {% extends 'base.html' %}
 
+{% block style %}
+  .background {
+    background: linear-gradient(#F094FF, white 20%)
+  }
+{% endblock style %}
+
 {% block content %}
-<h2>프로필 수정 페이지</h2>
-
-<a href="{% url 'accounts:userdelete' user.username %}">회원 탈퇴</a>
-<form action="" method="POST">
-  {% csrf_token %}
-  {{ form1.as_p }}
-  {{ password_form.as_p }}
-  <button>수정 완료</button>
-</form>
-
+  <div class="p-4">
+    <h2 class="my-4">Update your nickname.</h2>
+  
+    <a href="{% url 'accounts:userdelete' user.username %}">회원 탈퇴</a>
+    <form action="" method="POST">
+      {% csrf_token %}
+      {{ form1.as_p }}
+      {{ password_form.as_p }}
+      <button>수정 완료</button>
+    </form>
+  </div>
 {% endblock content %}
 
