@@ -25,13 +25,13 @@ def select_mood(request):
 def index(request, mood_pk):
 
     mood = {
-        '1' : ['Drama', 'Family', 'Fantasy', 'Romance'], 
+        '1' : ['Comedy', 'Family', 'Fantasy', 'Romance'], 
         '2' : ['Family', 'Documentary', 'History'],
-        '3' : ['Thriller', 'History', 'Romance'],
-        '4' : ['Documentary', 'Music', 'Tv Movie', 'Drama'],
-        '5' : ['Action', 'Adventure', 'Comedy', 'Fantasy', 'Romance'],
+        '3' : ['Drama', 'History', 'Documentary'],
+        '4' : ['Music', 'Tv Movie', 'Drama'],
+        '5' : ['Action', 'Adventure', 'Mystery',],
         '6' : ['Action', 'Western', 'Fantasy'],
-        '7' : ['Thriller', 'War', 'Horror']
+        '7' : ['Thriller', 'Crime', 'War', 'Horror']
     }
 
     # 보관함에 저장된 영화 목록
@@ -46,7 +46,7 @@ def index(request, mood_pk):
             if saved.filter(pk=movie.pk).exists():
                 continue
             if genre in movie.genres:
-                if len(data) > 50:
+                if len(data) > 30:
                     break
                 data.append(movie)
         if len(data) > 100:
