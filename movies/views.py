@@ -37,10 +37,9 @@ def index(request, mood_pk):
 
     # 추천 알고리즘
     data = []
-    movies = Movie.objects.all().order_by('-grade')[:50]
-    randomlst = [random.choice(movies) for i in range(10)]
+    movies = Movie.objects.all().order_by('-grade')[:100]
     for genre in mood[f'{mood_pk}']:
-        for movie in randomlst:
+        for movie in movies:
             if genre in movie.genres:
                 data.append(movie)
 
