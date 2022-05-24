@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from .forms import MoodForm, ReviewForm
 import random
@@ -45,18 +46,21 @@ def index(request, mood_pk):
 
     context = {
         'data': data,
+        'mood_pk': mood_pk,
     }
 
     return render(request, 'movies/index.html', context)
 
 
-def detail(request, movie_pk):
+def detail(request, mood_pk, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
 
     context = {
         'movie': movie,
-        # 'release_date' : movie.release_date[-4:],
+        'mood_pk': mood_pk,
+        
     }
+    print(f'mood_pk')
     return render(request, 'movies/detail.html', context)
 
 def create(request, movie_pk):
@@ -66,6 +70,7 @@ def create(request, movie_pk):
             review = form.save(commit=False)
 
             review.user = request.user
+            review.movie = Movie.objects.get(pk=movie_pk)
             review.save()
 
             return redirect('movies:detail', movie_pk)
@@ -76,3 +81,22 @@ def create(request, movie_pk):
         'form': form,
     }
     return render(request, 'movies/create.html', context)
+
+def save(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    user = request.user
+
+    response = {
+        'saved': False,
+        'count': 0,
+    }
+
+    if movie.bookmark.filter(pk=user.pk).exists():
+        movie.bookmark.remove(user)
+    else:
+        movie.bookmark.add(user)
+        response['saved'] = True
+
+    response['count'] = movie.bookmark.count()
+    return JsonResponse(response)
+    # return redirect('movies:detail', movie_pk)
