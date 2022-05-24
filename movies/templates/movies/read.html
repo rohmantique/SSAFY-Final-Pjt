@@ -2,12 +2,20 @@
 
 {% block content %}
 <div class="container m-3">
-  <h2>리뷰 읽기</h2>
-  <form action="{% url 'movies:update' review_pk %}">
-    {{ review.content }} <br>
-    {{ review.score }}
-    <button>수정하기</button>
-  </form>
+  <h2>리뷰</h2>
+  <a href="{% url 'movies:update' review_pk %}">
+    <div style="border-box;">
+      {{ review.content }} <br>
+      {{ review.score }}
+    </div>
+    <button>Edit</button>
+  </a>
+    
+    <form action="{% url 'movies:delete' review_pk %}" method="POST">
+      {% csrf_token %}
+      <button>Delete</button>
+    </form>
+  
 </div>
 {% endblock content %}
 
