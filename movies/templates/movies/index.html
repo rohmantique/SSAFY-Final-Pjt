@@ -14,6 +14,7 @@
 {% endblock style %}
 
 {% block content %}
+  
 
   <h2 class="m-2">We recommend ...</h2>
   <div class="container font">
@@ -24,7 +25,7 @@
         <div class="card-body">
           <p class="card-title"><strong>{{ movie.title }}</strong></p>
           <p class="card-text">{{ movie.release_date }}</p>
-          <p class="card-text">{{ movie.grade }}</p>
+          <p class="card-text">{{ movie.vote_average }}</p>
         </div>
       </div>
     </a>

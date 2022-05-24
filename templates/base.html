@@ -25,15 +25,15 @@
 </head>
 <body>
   <div class="background">
-      <img src="{% static 'images/iphone_13_mockup.png' %}" alt="iphone 13 mockup" class="iphone">
-      <nav>
-        <ul>
-          {% if request.user.is_authenticated %}
-          <a class="m-3" href="{% url 'accounts:profile' user.username %}">My Profile</a>
-          {% else %}
-          {% endif %}
-        </ul>
-      </nav>
+    <img src="{% static 'images/iphone_13_mockup.png' %}" alt="iphone 13 mockup" class="iphone">
+    <nav id="navbar">
+      <ul>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'accounts:profile' user.username %}">My Profile</a>
+        {% else %}
+        {% endif %}
+      </ul>
+    </nav>
     {% block content %}
     {% endblock content %}
   </div>

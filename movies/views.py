@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from .forms import MoodForm, ReviewForm
+from .forms import ReviewForm
 import random
 from pprint import pprint
 from .models import Movie, Review
@@ -37,7 +37,7 @@ def index(request, mood_pk):
 
     # 추천 알고리즘
     data = []
-    movies = Movie.objects.all().order_by('-grade')[:100]
+    movies = Movie.objects.all().order_by('-vote_average')[:100]
     for genre in mood[f'{mood_pk}']:
         for movie in movies:
             if genre in movie.genres:

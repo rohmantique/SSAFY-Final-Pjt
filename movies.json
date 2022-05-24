@@ -20351,19 +20351,6 @@
 		}
 	},
 	{
-		"pk": 118365,
-		"model": "movies.movie",
-		"fields": {
-			"title": "Moses, Prince of Egypt",
-			"release_date": "2000-01-01",
-			"vote_count": 4,
-			"vote_average": 5.5,
-			"description": "At birth, Moses, a Hebrew baby is abandoned on the Nile by his mother. The wife of Pharaoh finds the small and decides to raise him as his own son. Moses grows Egyptian with his brother, Ramses, between games and pranks. When Moses became a man discovers the truth about his birth and, confused, flees into the wilderness. There he joins a group of nomadic Hebrews and is pastor. One day, God appears as a burning bush and entrusted with the mission to free the Hebrew slaves that holds the Pharaoh. Moses returns to Egypt to demand the release of his people and found that Rameses has become the new Pharaoh.",
-			"poster_path": null,
-			"genres": []
-		}
-	},
-	{
 		"pk": 763149,
 		"model": "movies.movie",
 		"fields": {
@@ -37933,21 +37920,6 @@
 				"Drama",
 				"Music",
 				"Romance"
-			]
-		}
-	},
-	{
-		"pk": 964943,
-		"model": "movies.movie",
-		"fields": {
-			"title": "Marvel Studios: Assembled \u2013 The Making of Moon Knight",
-			"release_date": "2022-05-25",
-			"vote_count": 0,
-			"vote_average": 0,
-			"description": "Join the likes of Oscar Isaac and Ethan Hawke as they reveal how Marvel Studios' Moon Knight was painstakingly brought to life. Through insightful interviews with cast and crew, along with immersive footage from the set, this Making Of pulls back the curtain on this groundbreaking series. Additionally, incorporates a candid \"roundtable discussion\" with the series' directors.",
-			"poster_path": null,
-			"genres": [
-				"Documentary"
 			]
 		}
 	},
