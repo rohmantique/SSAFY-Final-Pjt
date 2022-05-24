@@ -5,41 +5,94 @@
   .background {
     background: linear-gradient(#28CBFF, white 20%)
   }
+
+  .movie-title {
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 !important;
+  }
+
+  .movie-specifics {
+    color: #747474;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  .ratings {
+    color: #747474;
+    font-size: 16px;
+    margin-right: 8px;
+  }
+
+  .border-bottom {
+    border-width: 2px !important;
+    border-color: #747474 !important;
+  }
+
+  .review-count {
+    color: #747474;
+    font-size: 12px;
+  }
+
+  .section-header {
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .section-content {
+    color: #3F3F3F;
+    font-size: 14px;
+  }
 {% endblock style %}
 
 {% block content %}
-  <div class="content m-3">
-    <div class="content-header d-flex">
-      <div class="movie-poster" style="width: 126px;">
-        <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="포스터 이미지"> 
+  <div class="content m-4">
+    <div class="content-header d-flex mb-1">
+      <div class="movie-poster me-3">
+        <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" style="width:126px;" alt="포스터 이미지"> 
       </div>
-      <div class="movie-info">
-        <div class="movie-title">
-          <p>{{ movie.title }}</p>
+      <div class="d-flex flex-column">
+        <div class="mt-auto">
+          <p class="movie-title">{{ movie.title }}</p>
         </div>
         <div class="movie-specifics">
-          <p>{{ movie.release_date|date:"Y"}}</p>
-          <p>{{ genres }}</p>
+          <span class="me-1 align-self-end">{{ movie.release_date|date:"Y"}}</span> •
+          <span class="ms-1 align-self-end">{{ genre }}</span>
         </div>
       </div>
     </div>
 
-    <p>⭐ {{ movie.vote_average }}</p>
-    <p>{{ total }}</p>
-    <p>Overview</p>
-    <p>{{ movie.description }}</p>
-    <hr>
-    {% for review in movie.review_set.all %}
-    <div class="d-flex justify-content-around">
-      <p>{{ review.score }}</p> | <p>{{ review.user }}</p>
+    <div class="border-bottom py-1 d-flex align-items-end">
+      <span class="ratings align-self-end ms-1">⭐ {{ movie.vote_average }}
+        <small class="review-count">({{ total }})</small>
+      </span>
     </div>
-    <p>{{ review.content }}</p>
-    {% endfor %}
-    <a href="{% url 'movies:create' movie.pk %}">평가하기</a>
-    <form action="{% url 'movies:save' movie.pk %}" method="POST">
-      {% csrf_token %}
-      <button>저장하기</button>
-    </form>
+
+    <div class="buttons my-3">
+      <a href="{% url 'movies:create' movie.pk %}">평가하기</a>
+      <form action="{% url 'movies:save' movie.pk %}" method="POST">
+        {% csrf_token %}
+        <button>저장하기</button>
+      </form>
+    </div>
+
+    <div class="overview mb-5 mt-3">
+      <h4 class="section-header">Overview</h4>
+      <p class="section-content">{{ movie.description }}</p>
+    </div>
+
+    <div class="reviews">
+      <h4 class="section-header">Reviews</h4>
+      {% for review in movie.review_set.all %}
+        <div class="d-flex justify-content-around">
+          <p>{{ review.score }}</p> | <p>{{ review.user }}</p>
+        </div>
+        <p class="section-content">{{ review.content }}</p>
+      {% endfor %}
+    </div>
   </div>
 
 
