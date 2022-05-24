@@ -23,7 +23,7 @@ def movie_info(genres):
                     'title': movie['title'],
                     'release_date': movie['release_date'],
                     'vote_count': movie['vote_count'],
-                    'grade': movie['vote_average'],
+                    'vote_average': movie['vote_average'],
                     'description': movie['overview'],
                     'poster_path': movie['poster_path'],
                     'genre_ids': movie['genre_ids']
