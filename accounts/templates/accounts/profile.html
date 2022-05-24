@@ -7,7 +7,7 @@
       {{ person.nickname }}님이 저장한 영화<br>
       {% for movie in user.saved.all  %}
         <a href="{% url 'movies:detail' movie.pk %}">
-          {{ movie.title }}
+          <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" style="width:126px;" alt="포스터 이미지"> 
         </a>
       <br>
       {% endfor %}
