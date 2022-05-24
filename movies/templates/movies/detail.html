@@ -3,36 +3,45 @@
 
 {% block style %}
   .background {
-    background: linear-gradient(#28CBFF, white 28%)
+    background: linear-gradient(#28CBFF, white 20%)
   }
 {% endblock style %}
 
 {% block content %}
-<div>
-  <a href="{{ request.META.HTTP_REFERER  }}">뒤로가기</a>
-</div>
-<div class="container m-3">
+  <div class="content m-3">
+    <div class="content-header d-flex">
+      <div class="movie-poster" style="width: 126px;">
+        <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="포스터 이미지"> 
+      </div>
+      <div class="movie-info">
+        <div class="movie-title">
+          <p>{{ movie.title }}</p>
+        </div>
+        <div class="movie-specifics">
+          <p>{{ movie.release_date|date:"Y"}}</p>
+          <p>{{ genres }}</p>
+        </div>
+      </div>
+    </div>
 
-  <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="포스터 이미지"> 
-  | <p>{{ movie.title }}</p>
-  | <p>{{ movie.release_date |date:"Y"}}</p>
-  | <p>{{ movie.genres }}</p>
-  | <p>{{ movie.vote_average }}</p>
-  | <p>{{ movie.vote_count }}</p>
-  <p><strong>Overview</strong></p>
-  <p>{{ movie.description }}</p>
-  <hr>
-  {% for review in movie.review_set.all %}
-  <div class="d-flex justify-content-around">
-    <p>{{ review.score }}</p> | <p>{{ review.user }}</p>
+    <p>⭐ {{ movie.vote_average }}</p>
+    <p>{{ total }}</p>
+    <p>Overview</p>
+    <p>{{ movie.description }}</p>
+    <hr>
+    {% for review in movie.review_set.all %}
+    <div class="d-flex justify-content-around">
+      <p>{{ review.score }}</p> | <p>{{ review.user }}</p>
+    </div>
+    <p>{{ review.content }}</p>
+    {% endfor %}
+    <a href="{% url 'movies:create' movie.pk %}">평가하기</a>
+    <form action="{% url 'movies:save' movie.pk %}" method="POST">
+      {% csrf_token %}
+      <button>저장하기</button>
+    </form>
   </div>
-  <p>{{ review.content }}</p>
-  {% endfor %}
-  <a href="{% url 'movies:create' movie.pk %}">평가하기</a>
-  <form action="{% url 'movies:save' movie.pk %}" method="POST">
-    {% csrf_token %}
-    <button>저장하기</button>
-  </form>
+
 
 
 
