@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<h2>프로필 수정 페이지</h2>
+<form action="" method="POST">
+  {% csrf_token %}
+  {{ form1.as_p }}
+  {{ password_form.as_p }}
+  <button>수정 완료</button>
+</form>
 
 {% endblock content %}
 

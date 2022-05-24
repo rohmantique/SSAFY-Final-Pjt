@@ -22,14 +22,14 @@ class MoodForm(forms.ModelForm):
         model = Mood
         fields = ('status', )
 
-class ReviewForm(forms.Form):
-    content = forms.TextInput(
-        attrs = {
-            'class': 'form-control',
-        }
-    )
-    score = forms.FloatField()
+class ReviewForm(forms.ModelForm):
+    # content = forms.TextInput(
+    #     attrs = {
+    #         'class': 'form-control',
+    #     }
+    # )
+    # score = forms.FloatField()
 
-    class Mega:
+    class Meta:
         model = Review
         fields = ('content', 'score', )

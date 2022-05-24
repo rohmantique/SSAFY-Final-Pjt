@@ -1,14 +1,18 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
-from accounts.forms import CustomProfileForm, CustomUserCreationForm
+from accounts.forms import  CustomUserCreationForm
 from django.contrib.auth import (
     login as auth_login,
     logout as auth_logout,
 )
 
 from .models import User
-from .forms import CustomAuthenticationForm
+from .forms import (
+    CustomAuthenticationForm, 
+    CustomUserChangeForm,
+    CheckPasswordForm,
+    )
 
 # Create your views here.
 def signup(request):
@@ -17,7 +21,7 @@ def signup(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect('movies:select_mood')
+            return redirect('accounts:login')
     else:
         form = CustomUserCreationForm()
 
@@ -55,28 +59,27 @@ def profile(request, username):
     # person = User.objects.filter(username=username)
     context = {
         'person': person,
-        # 'profile_status': profile_status,
     }
     return render(request, 'accounts/profile.html', context)
 
-
-def create_profile(request, username):
-    if request.method == 'POST':
-        form = CustomProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save(commit=False)
-            return redirect('accounts:profile', username)
-    else:
-        form = CustomProfileForm()
-
-    context = {
-        'form': form,
-    }
-    return render(request, 'accounts/create_profile.html', context)
-
-
 def update_profile(request, username):
-    pass
+
+    if request.method == 'POST':
+        form1 = CustomUserChangeForm(request.POST, instance=request.user)
+        password_form = CheckPasswordForm(request.user, request.POST)
+        if form1.is_valid():
+            if password_form.is_valid():
+                updated = form1.save(commit=False)
+                updated.save()
+                return redirect('accounts:profile', username)
+    else:
+        form1 = CustomUserChangeForm(instance=request.user)
+        password_form = CheckPasswordForm(request.user)
+    context = {
+        'form1': form1,
+        'password_form': password_form,
+    }
+    return render(request, 'accounts/update_profile.html', context)
 
 
 def follow(request, user_pk):

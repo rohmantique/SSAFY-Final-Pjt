@@ -4,16 +4,32 @@
   .background {
     background: linear-gradient(#28CBFF, white 40%, white 60%, #F094FF)
   }
+  .font {
+    font-size: 13px;
+  }
+  a {
+    text-decoration: none;
+    color: black;
+  }
 {% endblock style %}
 
 {% block content %}
-<p>감정에 따라 선택된 영화들을 보여주기</p>
-<div>
+<h2 class="m-2">We recommend ...</h2>
+<div class="container font">
   {% for movie in data %}
-    영화제목: {{ movie.title }}
-    개봉년도: {{ movie.realse_date }}
-    포스터: {{ movie.poster_path }}
+  <a href="{% url 'movies:detail' movie.pk %}">
+    <div class="card" style="width: 6rem; ">
+      <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="포스터 이미지">
+      <div class="card-body">
+        <p class="card-title"><strong>{{ movie.title }}</strong></p>
+        <p class="card-text">{{ movie.release_date }}</p>
+        <p class="card-text">{{ movie.grade }}</p>
+      </div>
+    </div>
+  </a>
   {% endfor %}
 </div>
+
+
 {% endblock content %}
 

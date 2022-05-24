@@ -7,12 +7,12 @@ total_data = []
 
 def movie_info(genres):
     # 1페이지부터 500페이지까지의 데이터를 가져옴.
-    for i in range(1, 501):
+    for i in range(1, 100):
         BASE_URL = "https://api.themoviedb.org/3"
         path = '/movie/popular'
         params = {
             'api_key': '86bdc6ba5098674a46de6901a230c5f7',
-            'page': 1
+            'page': i
         }
         movies = requests.get(BASE_URL+path, params=params).json().get('results')
 

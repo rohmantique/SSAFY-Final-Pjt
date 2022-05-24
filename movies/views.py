@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from .forms import MoodForm, ReviewForm
-import requests
 import random
 from pprint import pprint
 from .models import Movie
+import random
 
 # Create your views here.
 def select_mood(request):
@@ -28,16 +28,18 @@ def index(request, mood_pk):
         '1' : ['Drama', 'Family', 'Fantasy' ], 
         '2' : ['Family', 'Adventure', 'Fantasy', ],
         '3' : ['Documentary', 'History', 'Family', 'Romance', ],
-        '4' : ['Music', 'Tv Movie', ],
+        '4' : ['Music', 'Tv Movie', 'Drama', 'Family', ],
         '5' : ['Adventure', 'Comedy', 'Fantasy', 'Romance', ],
         '6' : ['Action', 'Western', 'Science Fiction', 'Fantasy', ],
         '7' : ['Thriller', 'War', 'Science Fiction', 'Horror', ]
     }
 
+    # 추천 알고리즘
     data = []
-    movies = Movie.objects.all().order_by('-grade')
+    movies = Movie.objects.all().order_by('-grade')[:50]
+    randomlst = [random.choice(movies) for i in range(10)]
     for genre in mood[f'{mood_pk}']:
-        for movie in movies:
+        for movie in randomlst:
             if genre in movie.genres:
                 data.append(movie)
 
@@ -53,6 +55,7 @@ def detail(request, movie_pk):
 
     context = {
         'movie': movie,
+        # 'release_date' : movie.release_date[-4:],
     }
     return render(request, 'movies/detail.html', context)
 
