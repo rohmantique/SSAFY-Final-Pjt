@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>리뷰 읽기</h2>
-{% for review in reviews %}
-  {{ review.content }}
-  {{ review.grade }}
-{% endfor %}
-
+<div class="container m-3">
+  <h2>리뷰 읽기</h2>
+  <form action="{% url 'movies:update' review_pk %}">
+    {{ review.content }} <br>
+    {{ review.score }}
+    <button>수정하기</button>
+  </form>
+</div>
 {% endblock content %}
 

@@ -2,6 +2,8 @@
 
 {% block content %}
 <h2>프로필 수정 페이지</h2>
+
+<a href="{% url 'accounts:userdelete' user.username %}">회원 탈퇴</a>
 <form action="" method="POST">
   {% csrf_token %}
   {{ form1.as_p }}
