@@ -1,10 +1,9 @@
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from .forms import ReviewForm
-import random
-from pprint import pprint
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.decorators import login_required
+
 from .models import Movie, Review
-import random
+from .forms import ReviewForm
 
 # Create your views here.
 def select_mood(request):
@@ -39,17 +38,19 @@ def index(request, mood_pk):
     saved = request.user.saved.all()
 
     # 리뷰를 쓴 영화 제외
-    # 보관함에 저장된 영화 제외
-    rest_movies = Movie.objects.exclude(
-        review__user=request.user, 
-        bookmark__id__in=saved
-    ).order_by('-vote_average')
+    rest_movies = Movie.objects.exclude(review__user=request.user).order_by('-vote_average')
 
     data = []
     for genre in mood[f'{mood_pk}']:
         for movie in rest_movies:
+            if saved.filter(pk=movie.pk).exists():
+                continue
             if genre in movie.genres:
+                if len(data) > 50:
+                    break
                 data.append(movie)
+        if len(data) > 100:
+            break
 
     context = {
         'saved': saved,
@@ -138,3 +139,13 @@ def update(request, review_pk):
         'form': form,
     }
     return render(request, 'movies/update.html', context)
+
+
+@login_required
+def delete(request, review_pk):
+    if not request.user.is_authenticated:
+        return HttpResponse('Not autorized')
+
+    review = get_object_or_404(Review, pk=review_pk)
+    review.delete()
+    return redirect('movies:select_mood')
