@@ -14,22 +14,30 @@
 {% endblock style %}
 
 {% block content %}
-<h2 class="m-2">We recommend ...</h2>
-<div class="container font">
-  {% for movie in data %}
-  <a href="{% url 'movies:detail' movie.pk %}">
-    <div class="card" style="width: 6rem; ">
-      <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="포스터 이미지">
-      <div class="card-body">
-        <p class="card-title"><strong>{{ movie.title }}</strong></p>
-        <p class="card-text">{{ movie.release_date }}</p>
-        <p class="card-text">{{ movie.grade }}</p>
-      </div>
-    </div>
-  </a>
-  {% endfor %}
-</div>
+  <nav>
+    <ul>
+      {% if request.user.is_authenticated %}
+      <a href="{% url 'accounts:profile' user.username %}">My Profile</a>
+      {% else %}
+      {% endif %}
+    </ul>
+  </nav>
 
+  <h2 class="m-2">We recommend ...</h2>
+  <div class="container font">
+    {% for movie in data %}
+    <a href="{% url 'movies:detail' mood_pk movie.pk %}">
+      <div class="card" style="width: 6rem; ">
+        <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="포스터 이미지">
+        <div class="card-body">
+          <p class="card-title"><strong>{{ movie.title }}</strong></p>
+          <p class="card-text">{{ movie.release_date }}</p>
+          <p class="card-text">{{ movie.grade }}</p>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
 
 {% endblock content %}
 
