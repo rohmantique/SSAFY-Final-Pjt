@@ -26,21 +26,24 @@ def select_mood(request):
 def index(request, mood_pk):
 
     mood = {
-        '1' : ['Drama', 'Family', 'Fantasy' ], 
-        '2' : ['Family', 'Adventure', 'Fantasy', ],
-        '3' : ['Documentary', 'History', 'Family', 'Romance', ],
-        '4' : ['Music', 'Tv Movie', 'Drama', 'Family', ],
-        '5' : ['Adventure', 'Comedy', 'Fantasy', 'Romance', ],
-        '6' : ['Action', 'Western', 'Science Fiction', 'Fantasy', ],
-        '7' : ['Thriller', 'War', 'Science Fiction', 'Horror', ]
+        '1' : ['Drama', 'Family', 'Fantasy', 'Romance'], 
+        '2' : ['Family', 'Documentary', 'History'],
+        '3' : ['Thriller', 'History', 'Romance'],
+        '4' : ['Documentary', 'Music', 'Tv Movie', 'Drama'],
+        '5' : ['Action', 'Adventure', 'Comedy', 'Fantasy', 'Romance'],
+        '6' : ['Action', 'Western', 'Fantasy'],
+        '7' : ['Thriller', 'War', 'Horror']
     }
+
+    bookmarked_movies = Movie.objects.get()
 
     # 추천 알고리즘
     data = []
-    movies = Movie.objects.all().order_by('-vote_average')[:100]
+    movies = Movie.objects.all().order_by('-vote_average')[:200]
     for genre in mood[f'{mood_pk}']:
         for movie in movies:
             if genre in movie.genres:
+
                 data.append(movie)
 
     context = {

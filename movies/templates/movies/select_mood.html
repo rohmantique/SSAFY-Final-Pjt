@@ -101,6 +101,9 @@
 
 {% block script %}
   <script>
+    const navbar = document.querySelector('nav#navbar')
+    navbar.setAttribute('class', 'd-none')
+    
     {% comment %} dropdown 클릭 시 나타내기 {% endcomment %}
     const button = document.querySelector('p#button')
     
@@ -112,7 +115,5 @@
         dropdown.classList.replace('m-fadeOut', 'm-fadeIn')
       }
     })
-
   </script>
 {% endblock script %}
-

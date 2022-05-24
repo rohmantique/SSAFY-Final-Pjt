@@ -44,3 +44,9 @@
 
 {% endblock content %}
 
+{% block script %}
+  <script>
+    const navbar = document.querySelector('nav#navbar')
+    navbar.setAttribute('class', 'd-none')
+  </script>
+{% endblock script %}
