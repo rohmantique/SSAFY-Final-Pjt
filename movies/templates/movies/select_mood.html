@@ -7,33 +7,112 @@
     background: linear-gradient(#28CBFF, white 40%, white 60%, #F094FF)
   }
 
+  .header-width-control{
+    width: 230px;
+  }
+
   .banner {
     border-radius: 45px;
   }
 
-  p, a {
-    color: #5200FF !important;
+  a {
     text-decoration: none;
+    color: #5200FF !important;
+  }
+
+  ul {
+    margin: 0 !important;
+  }
+
+  .my-color {
+    color: #5200FF !important;
+    font-size: 20px;
+    text-decoration: none;
+  }  
+
+  .i-am {
+    padding: 10px;
+    margin: 0px;
+    background: #FFF069;
+    border-radius: 35px;
+    cursor: pointer !important;
+  }
+
+  .dropdown {
+    background: #FFF069;
+    border-radius: 35px;
+  }
+
+  .mood-item {
+    padding: 10px;
+  }
+
+  .odd {
+    background: #FF9141;
+  }
+
+  .edge-top {
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
+  }
+  
+  .edge-bottom {
+    border-bottom-left-radius: 35px;
+    border-bottom-right-radius: 35px;
+  }
+
+  .m-fadeIn {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 1.5s linear 300ms, opacity 300ms;
+  }
+
+  .m-fadeOut {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 1.5s linear 0ms, opacity 300ms;
   }
 {% endblock style %}
 
 {% block content %}
   <img src="{% static 'images/dripping_others.png' %}" alt="dripping effect" class="img-fluid banner">
-  <header class="mb-5">
-    <h2>How's your mood</h2>
-    <h2>today?</h2>
+  <header class="d-flex justify-content-center mb-5">
+    <div class="header-width-control">
+      <h2>How's your mood</h2>
+      <h2>today?</h2>
+    </div>
   </header>
 
-  <p>I am...</p>
-  <ul class="list-unstyled">
-    <li><a href="{% url 'movies:index' '1' %}">happy</a></li>
-    <li><a href="{% url 'movies:index' '2' %}">hungry</a></li>
-    <li><a href="{% url 'movies:index' '3' %}">low</a></li>
-    <li><a href="{% url 'movies:index' '4' %}">chill</a></li>
-    <li><a href="{% url 'movies:index' '5' %}">bored</a></li>
-    <li><a href="{% url 'movies:index' '6' %}">stressed</a></li>
-    <li><a href="{% url 'movies:index' '7' %}">savage</a></li>
-  </ul>
-
+  <main class="d-flex justify-content-center">
+    <div class="mood-select">
+      <p id="button" class="i-am my-color">I am...</p>
+      <ul id="dropdown" class="dropdown list-unstyled m-fadeIn">
+        <li class="mood-item odd edge-top"><a href="{% url 'movies:index' '1' %}" class="my-color">happy</a></li>
+        <li class="mood-item"><a href="{% url 'movies:index' '2' %}" class="my-color">hungry</a></li>
+        <li class="mood-item odd"><a href="{% url 'movies:index' '3' %}" class="my-color">low</a></li>
+        <li class="mood-item"><a href="{% url 'movies:index' '4' %}" class="my-color">chill</a></li>
+        <li class="mood-item odd"><a href="{% url 'movies:index' '5' %}" class="my-color">bored</a></li>
+        <li class="mood-item"><a href="{% url 'movies:index' '6' %}" class="my-color">stressed</a></li>
+        <li class="mood-item odd edge-bottom"><a href="{% url 'movies:index' '7' %}" class="my-color">savage</a></li>
+      </ul>
+    </div>
+  </main>
 {% endblock content %}
+
+{% block script %}
+  <script>
+    {% comment %} dropdown 클릭 시 나타내기 {% endcomment %}
+    const button = document.querySelector('p#button')
+    
+    button.addEventListener('click', (e) => {
+      const dropdown = document.querySelector('ul#dropdown')
+      if (dropdown.classList.contains('m-fadeIn')) {
+        dropdown.classList.replace('m-fadeIn', 'm-fadeOut')
+      } else {
+        dropdown.classList.replace('m-fadeOut', 'm-fadeIn')
+      }
+    })
+
+  </script>
+{% endblock script %}
 
