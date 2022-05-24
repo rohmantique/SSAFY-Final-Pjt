@@ -1,27 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="container m-3">
   <h2>{{ person.nickname }}님의 프로필 페이지</h2>
-
   <a href="{% url 'accounts:update_profile' user %}">프로필 수정하기</a>
-  <div>
-    {{ person.nickname }}님이 저장한 영화<br>
-    {% for movie in user.saved.all  %}
-    <a href="{% url 'movies:detail' movie.pk %}">
-      {{ movie.title }}
-    </a>
-    <br>
-    {% endfor %}
-    {{ person.nickname }}님이 작성한 리뷰<br>
-    {% comment %} {% for  in  %}
-    
-    {% endfor %} {% endcomment %}
-  </div>
-
-  
     <div>
-      
+      {{ person.nickname }}님이 저장한 영화<br>
+      <a href="{% url 'movies:detail' mood_pk movie.pk %}">
+      {% for movie in user.saved.all  %}
+        {{ movie.title }}
+      </a>
+      <br>
+      {% endfor %}
+      <br>
+      <br>
+      {{ person.nickname }}님이 작성한 리뷰<br>
+      <a href="{% url 'movies:read' mood_pk movie.pk %}">  
+        {% for review in user.review_set.all  %}
+        {{ review.content }} <br>
+        {% endfor %}
+    </a>
     </div>
-
+  </div>
 
 {% endblock content %}
 

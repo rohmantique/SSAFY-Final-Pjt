@@ -8,6 +8,9 @@
 {% endblock style %}
 
 {% block content %}
+<div>
+  <a href="{% url 'movies:index' mood_pk %}">back</a>
+</div>
 <div class="container m-3">
 
   <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="포스터 이미지">
@@ -16,7 +19,7 @@
   <p>{{ movie.grade }}</p>
   <p><strong>Overview</strong></p>
   <p>{{ movie.description }}</p>
-  <a href="{% url 'movies:create' movie.pk %}">평가하기</a>
+  <a href="{% url 'movies:create' mood_pk movie.pk %}">평가하기</a>
   <form action="" method="POST">
     {% csrf_token %}
     <button>저장하기</button>
