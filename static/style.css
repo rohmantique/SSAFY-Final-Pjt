@@ -34,6 +34,13 @@ input {
   width: 375px;
   height: 803px;
   border-radius: 45px;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.background::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 
 .button {
