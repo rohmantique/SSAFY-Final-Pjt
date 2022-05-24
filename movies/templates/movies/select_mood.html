@@ -7,17 +7,18 @@
     background: linear-gradient(#28CBFF, white 40%, white 60%, #F094FF)
   }
 
+  .banner {
+    border-radius: 45px;
+  }
+
   p, a {
     color: #5200FF !important;
     text-decoration: none;
   }
-
-
-
 {% endblock style %}
 
 {% block content %}
-  <img src="{% static 'images/dripping_others.png' %}" alt="dripping effect" class="img-fluid">
+  <img src="{% static 'images/dripping_others.png' %}" alt="dripping effect" class="img-fluid banner">
   <header class="mb-5">
     <h2>How's your mood</h2>
     <h2>today?</h2>

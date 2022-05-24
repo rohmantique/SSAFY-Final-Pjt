@@ -32,6 +32,8 @@ input {
 
 .background {
   width: 375px;
+  height: 803px;
+  border-radius: 45px;
 }
 
 .button {
@@ -40,4 +42,28 @@ input {
   color: #800083 !important;
   font-size: 14px;
   text-decoration: none !important;
+}
+
+.accounts-container {
+  width: 218px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.form-width-control {
+  margin-top: 15px;
+}
+
+.header-width-control {
+  width: 219px;
+}
+
+ul {
+  padding: 0 !important;
+}
+li {
+  font-size: 10px;
+  list-style-type: none;
 }
