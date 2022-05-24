@@ -5,20 +5,20 @@
   <a href="{% url 'accounts:update_profile' user %}">프로필 수정하기</a>
     <div>
       {{ person.nickname }}님이 저장한 영화<br>
-      {% comment %} <a href="{% url 'movies:detail' mood_pk movie.pk %}"> {% endcomment %}
       {% for movie in user.saved.all  %}
-        {{ movie.title }}
-      {% comment %} </a> {% endcomment %}
+        <a href="{% url 'movies:detail' movie.pk %}">
+          {{ movie.title }}
+        </a>
       <br>
       {% endfor %}
       <br>
       <br>
       {{ person.nickname }}님이 작성한 리뷰<br>
-      {% comment %} <a href="{% url 'movies:read' mood_pk movie.pk %}">   {% endcomment %}
-        {% for review in user.review_set.all  %}
-        {{ review.content }} <br>
-        {% endfor %}
-    {% comment %} </a> {% endcomment %}
+      {% for review in user.review_set.all  %}
+        <a href="{% url 'movies:read' review.pk %}">  
+          {{ review.content }} <br>
+        </a>
+      {% endfor %}
     </div>
   </div>
 

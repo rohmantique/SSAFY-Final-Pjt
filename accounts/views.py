@@ -6,6 +6,7 @@ from django.contrib.auth import (
     login as auth_login,
     logout as auth_logout,
 )
+from django.contrib.auth.decorators import login_required
 
 from .models import User
 from .forms import (
@@ -51,7 +52,7 @@ def login(request):
 
 def logout(request):
     auth_logout(request)
-    return redirect('movies:home')
+    return redirect('accounts:login')
 
 
 def profile(request, username):
@@ -81,25 +82,21 @@ def update_profile(request, username):
     }
     return render(request, 'accounts/update_profile.html', context)
 
+@login_required
+def userdelete(request, username):
 
-def follow(request, user_pk):
-    user = get_object_or_404(User, pk=user_pk)
-    you = request.user
-    response = {
-        'followed': False,
-        'count': 0
-    }
+    if request.method == 'POST':
+        password_form = CheckPasswordForm(request.user, request.POST)
 
-    if user.followers.filter(pk=you.pk).exists():
-        user.followers.remove(you)
-        response['followed'] = False
+        if password_form.is_valid():
+            request.user.delete()
+            logout(request)
+            return redirect('accounts:login')
     else:
-        user.followers.add(you)
-        response['followed'] = True
+        password_form = CheckPasswordForm(request.user)
 
-    response['count'] = user.followers.count()
-
-    return JsonResponse(response)
-    
-
-
+    context = {
+        'password_form': password_form,
+        'username': username,
+    }
+    return render(request, 'accounts/user_delete.html', context)

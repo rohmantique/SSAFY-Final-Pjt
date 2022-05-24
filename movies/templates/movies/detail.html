@@ -9,7 +9,7 @@
 
 {% block content %}
 <div>
-  <a href="{% url 'movies:index' mood_pk %}">back</a>
+  <a href="{{ request.META.HTTP_REFERER  }}">뒤로가기</a>
 </div>
 <div class="container m-3">
 
@@ -19,11 +19,11 @@
   <p>{{ movie.grade }}</p>
   <p><strong>Overview</strong></p>
   <p>{{ movie.description }}</p>
-  <a href="{% url 'movies:create' mood_pk movie.pk %}">평가하기</a>
-  <form action="" method="POST">
+  <a href="{% url 'movies:create' movie.pk %}">평가하기</a>
+  <form action="{% url 'movies:save' movie.pk %}" method="POST">
     {% csrf_token %}
     <button>저장하기</button>
-</form>
+  </form>
 
 
 
