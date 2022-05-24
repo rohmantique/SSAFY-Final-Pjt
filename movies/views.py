@@ -64,12 +64,32 @@ def index(request, mood_pk):
 def detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
 
+    # 장르 문자열 처리
+    i = 0
+    genres = []
+    while i + 1 < len(movie.genres):
+        i += 1
+        if list(movie.genres)[i].isalpha():
+            g = str(list(movie.genres)[i])
+            while list(movie.genres)[i+1].isalpha():
+                i += 1
+                g += str(list(movie.genres)[i])
+            genres.append(g)
+
+    if len(genres) > 2:
+        genre = f'{genres[0]}/{genres[1]}'
+    else:
+        genre = genres[0]
+
+    # vote_count 쉼표 추가
+    total = format(movie.vote_count, ',')
+
     context = {
         'movie': movie,
-        # 'mood_pk': mood_pk,
-        
+        'genre': genre,
+        'total': total,
     }
-    print(f'mood_pk')
+
     return render(request, 'movies/detail.html', context)
 
 
