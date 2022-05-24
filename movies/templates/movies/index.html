@@ -5,46 +5,76 @@
     background: linear-gradient(#28CBFF, white 40%, white 60%, #F094FF)
   }
 
-  .font {
-    font-size: 13px;
+  .box-width-control {
+    padding: 0 28px;
   }
-  a {
-    text-decoration: none;
-    color: black;
+
+  h2 {
+    font-size: 20px;
+  }
+
+  a, a:focus, a:active, a:hover {
+    padding: 0 6px !important;
+  }
+
+  .card {
+    border-color: #5200FF;
+    border-radius: 0;
+  }
+
+  .card-body {
+    padding: 3px;
+  }
+  .card-title {
+    font-size: 11px;
+    font-weight: bold;
+    color: #3F3F3F;
+    line-height: 14px !important;
+    margin-bottom: 4px;
+  }
+
+  .card-text {
+    font-size: 9px;
+    color: #3F3F3F;
   }
 {% endblock style %}
 
 {% block content %}
-  
-  {% if saved|length != 0 %}
-    <h2>Movies saved for today</h2>
-    {% for saved_movie in saved %}
-      <a href="{% url 'movies:detail' saved_movie.pk %}">
-        <div class="card" style="width: 6rem; ">
-          <img src="https://image.tmdb.org/t/p/original{{ saved_movie.poster_path }}" class="card-img-top" alt="포스터 이미지">
-          <div class="card-body">
-            <p class="card-title"><strong>{{ saved_movie.title }}</strong></p>
-            <p class="card-text">{{ saved_movie.release_date }}</p>
-            <p class="card-text">{{ saved_movie.vote_average }}</p>
-          </div>
-        </div>
-      </a>
-    {% endfor %}
-  {% endif %}
-  <h2 class="m-2">We recommend ...</h2>
-  <div class="container font">
-    {% for movie in data %}
-    <a href="{% url 'movies:detail' movie.pk %}">
-      <div class="card" style="width: 6rem; ">
-        <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="포스터 이미지">
-        <div class="card-body">
-          <p class="card-title"><strong>{{ movie.title }}</strong></p>
-          <p class="card-text">{{ movie.release_date }}</p>
-          <p class="card-text">{{ movie.vote_average }}</p>
-        </div>
+  <div class="box-width-control mb-5">
+    {% if saved|length != 0 %}
+      <h2 class="mt-4 mb-3">Movies you saved for today...</h2>
+      <div class="row row-cols-3 px-1 gy-4">
+        {% for saved_movie in saved %}
+          <a href="{% url 'movies:detail' saved_movie.pk %}">
+            <div class="col">
+              <div class="card">
+                <img src="https://image.tmdb.org/t/p/original{{ saved_movie.poster_path }}" class="card-img-top p-1" alt="포스터 이미지">
+                <div class="card-body">
+                  <p class="card-title">{{ saved_movie.title }}</p>
+                  <p class="card-text">⭐ {{ saved_movie.vote_average }}</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        {% endfor %}
       </div>
-    </a>
-    {% endfor %}
+    {% endif %}
+    <h2 class="mt-4 mb-3">We recommend ...</h2>
+    <div class="row row-cols-3 px-1 gy-4">
+      {% for movie in data %}
+        <a href="{% url 'movies:detail' movie.pk %}">
+          <div class="col">
+            <div class="card">
+              <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top p-1" alt="포스터 이미지">
+              <div class="card-body">
+                <p class="card-title">{{ movie.title }}</p>
+                <p class="card-text">⭐ {{ movie.vote_average }}</p>
+              </div>
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
   </div>
 
 {% endblock content %}
