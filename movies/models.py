@@ -10,7 +10,8 @@ class Mood(models.Model):
 class Movie(models.Model):
     title = models.CharField(max_length=100) #제목
     release_date = models.DateField(blank=True) #개봉일
-    grade = models.IntegerField(blank=True) #평점
+    vote_average = models.FloatField(blank=True) #평점
+    vote_count = models.IntegerField(blank=True)
     genres = models.CharField(max_length=50, blank=True) #장르
     mood = models.ManyToManyField(Mood, blank=True)
     description = models.TextField(blank=True) #줄거리
