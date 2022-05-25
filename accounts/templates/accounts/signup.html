@@ -68,5 +68,14 @@
   <script>
     const navbar = document.querySelector('nav#navbar')
     navbar.setAttribute('class', 'd-none')
+
+    const username = document.querySelector('input#username')
+    const nickname = document.querySelector('input#nickname')
+    const onlyEnglish = function() {
+      const pattern2 = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g
+      this.value = this.value.replace(pattern2, '')
+    }
+    username.addEventListener('keyup', onlyEnglish)
+    nickname.addEventListener('keyup', onlyEnglish)
   </script>
 {% endblock script %}
