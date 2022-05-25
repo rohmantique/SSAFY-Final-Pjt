@@ -7,6 +7,7 @@ from django.contrib.auth import (
     logout as auth_logout,
 )
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from .models import User
 from .forms import (
@@ -91,7 +92,8 @@ def userdelete(request, username):
         if password_form.is_valid():
             request.user.delete()
             logout(request)
-            return redirect('accounts:login')
+            messages.add_message(request, messages.ERROR, '성공적으로 회원 탈퇴되었습니다! 서비스 이용을 위해 재가입해주세요')
+            return redirect('accounts:signup')
     else:
         password_form = CheckPasswordForm(request.user)
 
@@ -99,4 +101,4 @@ def userdelete(request, username):
         'password_form': password_form,
         'username': username,
     }
-    return render(request, 'accounts/user_delete.html', context)
+    return render(request, 'accounts/update_profile.html', context)

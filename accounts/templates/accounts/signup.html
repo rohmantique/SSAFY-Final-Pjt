@@ -41,6 +41,17 @@
         <h2>Create account.</h2>
       </div>
     </header>
+
+    <ul class="list-unstyled m-2 text" style="text-align: center;">
+      {% for message in messages %}
+      <li 
+          {% if message.tags == 'error' %}
+          class="alert p-0"
+          {% endif %}
+        >
+          {{  message }}
+      {% endfor %}
+    </ul>
   
     <div class="accounts-container">
       <form action="" method="POST" class="form-width-control">
