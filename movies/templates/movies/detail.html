@@ -88,7 +88,7 @@
 {% endblock style %}
 
 {% block content %}
-  <div class="content m-4">
+  <div class="m-4">
     <div class="content-header d-flex mb-1">
       <div class="movie-poster me-3">
         <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" style="width:126px;" alt="포스터 이미지"> 
@@ -169,6 +169,7 @@
     <div class="reviews">
       <h4 class="section-header">Reviews</h4>
       {% for review in reviews %}
+      <a href="{% url 'movies:read' review.pk %}">
         <div class="mb-3 mt-3">
           <div class="review-header d-flex justify-content-between">
             <div class="review-score">
@@ -268,6 +269,7 @@
             <span id="like-count-{{ review.pk }}">{{ review.like_users.all|length }}</span>
           </div>
         </div>
+      </a>
       {% endfor %}
     </div>
   </div>

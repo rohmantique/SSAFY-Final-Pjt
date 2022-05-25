@@ -1,5 +1,5 @@
 from django import forms
-from . models import Review
+from . models import Review, Comment
 
 class ReviewForm(forms.ModelForm):
     content = forms.CharField(
@@ -24,3 +24,18 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ('content', 'score', )
+
+class CommentForm(forms.ModelForm):
+    content = forms.CharField(
+        label='comment...',
+        widget=forms.Textarea(
+            attrs = {
+                'class': 'form-control',
+                'maxlength': 100,
+            }
+        )
+    )
+    
+    class Meta:
+        model = Comment
+        exclude = ('review', 'user', )

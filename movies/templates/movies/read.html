@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container m-3">
-  <h2>리뷰</h2>
+<div class="m-4">
+  <h2>Reviews {{ review.user }} wrote</h2>
   <a href="{% url 'movies:update' review_pk %}">
     <div style="border-box;">
       {{ review.content }} <br>
       {{ review.score }}
     </div>
+    <div class='container d-flex justify-content-between'>
     <button>Edit</button>
   </a>
     
@@ -15,6 +16,28 @@
       {% csrf_token %}
       <button>Delete</button>
     </form>
+    </div>
+  <h4>Comment List</h4>
+  {% if comments|length %}
+    <p>{{ comments|length }}개의 댓글이 있습니다.</p>
+  {% endif %}
+  {% for comment in comments %}
+    <div>
+      {{ comment.user }} - {{ comment.content }}
+    </div>
+  {% empty %}
+    <p>댓글이 없어요...</p>
+  {% endfor %}
+  <hr>
+  {% if request.user.is_authenticated %}
+    <form action="{% url 'movies:read' review.pk %}" method="POST">
+      {% csrf_token %}
+      <div>
+        {{ comment_form }}
+      </div>
+    <button>Submit</button>
+    </form>
+  {% endif %}
   
 </div>
 {% endblock content %}
