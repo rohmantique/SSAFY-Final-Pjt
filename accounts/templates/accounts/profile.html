@@ -8,10 +8,29 @@
 
 {% block content %}
 <div class="p-4">
-  <h2 class="my-4">{{ person.nickname }}님의 프로필 페이지</h2>
-  <a href="{% url 'accounts:update_profile' user %}">프로필 수정하기</a>
+  <h2 class="my-4">{{ person.nickname }}'s Profile</h2>
+  <div>
+    <form action="{% url 'accounts:logout' %}" method="POST">
+      {% csrf_token %}
+      <button>Logout</button>
+    </form>
+    <button><a href="{% url 'accounts:update_profile' user %}">Update My Profile</a></button>
+  </div>
+  <hr>
+
+  <div class="d-flex justify-content-between mx-5">
     <div>
-      {{ person.nickname }}님이 저장한 영화<br>
+      <p>saved</p>
+      <p style="text-align: center;">{{ user.saved.all | length }}</p> 
+    </div>
+    <div>
+      <p>rate</p>
+      <p style="text-align: center;">{{ user.review_set.all | length }}</p> 
+    </div>
+  </div>
+  <hr>
+    <div>
+      Movies {{ person.nickname }} saved...<br>
       {% for movie in user.saved.all  %}
         <a href="{% url 'movies:detail' movie.pk %}">
           <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" style="width:126px;" alt="포스터 이미지"> 
@@ -20,7 +39,7 @@
       {% endfor %}
       <br>
       <br>
-      {{ person.nickname }}님이 작성한 리뷰<br>
+      Reviews {{ person.nickname }} wrote...<br>
       {% for review in user.review_set.all  %}
         <a href="{% url 'movies:read' review.pk %}">  
           {{ review.content }} <br>
