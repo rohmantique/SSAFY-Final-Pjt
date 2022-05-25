@@ -19,6 +19,12 @@ urlpatterns = [
     # 영화 북마크
     path('<str:movie_pk>/save/', views.save, name='save'),
     # 영화 리뷰 좋아요
-    path('<str:review_pk>/like/', views.review_like, name='review_like')
+    path('<str:review_pk>/like/', views.review_like, name='review_like'),
+
+    # path('commentcreate/<str:review_pk>/', views.commentcreate, name='commentcreate'),
+
+    # path('commentupdate/<str:review_pk>/', views.commentupdate, name='commentupdate'),
+    # path('commentread/<str:review_pk>/', views.commentread, name='commentread'),
+    # path('commentdelete/<str:review_pk>/', views.commentdelete, name='commentdelete')
     
 ]
