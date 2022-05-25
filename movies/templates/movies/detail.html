@@ -98,16 +98,29 @@
     </div>
 
     <div class="d-flexbuttons my-3">
-      <div class="d-flex flex-column justify-content-center">
-        <div class="review-button">
-          <a href="{% url 'movies:create' movie.pk %}">
-            <i class="bi bi-star btn-color"></i>
-          </a>
+      {% if already_review %}
+      {% for review in already_review %}
+        <div class="d-flex flex-column justify-content-center"> 
+          <div class="review-button">
+            <a href="{% url 'movies:update' review.pk %}"><!--update로 수정해야함-->
+              <i class="bi bi-star btn-color"></i>
+            </a>
+          </div>
+          <div>Edit my review on this film</div>
         </div>
-        <div>Rate this film</div>
-      </div>
+      {% endfor %}
+      {% else %}
+        <div class="d-flex flex-column justify-content-center">
+          <div class="review-button">
+            <a href="{% url 'movies:create' movie.pk %}">
+              <i class="bi bi-star btn-color"></i>
+            </a>
+          </div>
+          <div>Rate this film</div>
+      {% endif %}
+
       <div class="save-button">
-        <form action="{% url 'movies:save' movie.pk %}" method="POST" class="save-form" data-movie-id="{{ movie.pk }}">
+        <form method="POST" class="save-form" data-movie-id="{{ movie.pk }}">
           {% csrf_token %}
           {% if user in movie.bookmark.all %}
             <div>
@@ -215,12 +228,22 @@
                 {{ review.score }}
               {% endif %}
             </div>
+            
             <div class="d-flex align-items-baseline">
               <div class="review-created me-2">{{ review.created_at|date:"Y-m-d" }}</div>
               <div class="review-writer">{{ review.user.nickname }}</div>
             </div>
           </div>
           <div class="review-content">{{ review.content }}</div>
+          
+          <form method="POST" class="like-form" data-review-id="{{ review.pk }}">
+            {% csrf_token %}
+              {% if request.user in review.like_users.all %}
+                <button id="like-{{ review.pk }}">좋아요 취소</button>
+              {% else %}
+                <button id="like-{{ review.pk }}">좋아요</button>
+              {% endif %}
+          </form>
         </div>
       {% endfor %}
     </div>
@@ -236,12 +259,21 @@
       if (saved) {saveBtn.classList.add("bi", "bi-check-circle-fill", "btn-color")}
       else {saveBtn.classList.add("bi", "bi-plus-circle-dotted", "btn-color")}
     }
+    function updateLikeStatus(reviewId, liked) {
+      const likeBtn = document.querySelector(`#like-${reviewId}`)
+      likeBtn.classList = ''
+      if (liked) {
+        likeBtn.innerText = '좋아요 취소'
+      } else {
+        likeBtn.innerText = '좋아요'
+      }
+    }
 
     async function onSubmit(event) {
       event.preventDefault()
 
       const movieId = event.target.dataset.movieId
-      const url = `http://127.0.0.1:8000/movies/${movieId}/save/`
+      const url = `/movies/${movieId}/save/`
 
       const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
       const config = {
@@ -251,13 +283,37 @@
       const response = await axios.post(url, {}, config)
       const { saved } = response.data
       updateBookmarkStatus(movieId, saved)
+      
+    }
+    async function likeOnSubmit(event) {
+      event.preventDefault()
+      console.log('되나????????')
+
+      const reviewId = event.target.dataset.reviewId
+      const url =   `/movies/${reviewId}/like/`
+
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      const config = {
+        headers: {'X-CSRFToken': csrftoken},
+      }
+
+      const likeresponse = await axios.post(url, {}, config)
+      const { liked } = likeresponse.data
+      updateLikeStatus(reviewId, liked)
     }
 
     function attachEvent(form) {
       form.addEventListener('submit', onSubmit)
     }
+    function attachLikeEvent(likeform) {
+      likeform.addEventListener('submit', likeOnSubmit)
+    }
 
-    const formList = document.querySelector('.save-form')
-    formList.forEach(attachEvent)
+    const form = document.querySelector('.save-form')
+    const likeform = document.querySelectorAll('.like-form')
+    attachEvent(form)
+    likeform.forEach((form) => {
+      attachLikeEvent(form)
+    })
   </script>
 {% endblock script %}

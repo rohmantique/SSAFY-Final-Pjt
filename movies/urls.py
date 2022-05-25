@@ -18,5 +18,7 @@ urlpatterns = [
     path('<str:movie_pk>/', views.detail, name='detail'),
     # 영화 북마크
     path('<str:movie_pk>/save/', views.save, name='save'),
+    # 영화 리뷰 좋아요
+    path('<str:review_pk>/like/', views.review_like, name='review_like')
     
 ]
