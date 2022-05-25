@@ -245,28 +245,38 @@
                 {{ review.score }}
               {% endif %}
             </div>
-            
             <div class="d-flex align-items-baseline">
-              <div class="review-created me-2">{{ review.created_at|date:"Y-m-d" }}</div>
+              <div class="review-created me-2">
+                {{ review.updated_at|date:"Y-m-d" }}
+                {% if review.created_at != review.updated_at %}
+                  (edited)
+                {% endif %}                
+              </div>
               <div class="review-writer">{{ review.user.nickname }}</div>
             </div>
           </div>
           <div class="review-content">{{ review.content }}</div>
           
-          <div class="fs-8 d-flex align-items-center">
-            <form method="POST" class="like-form" data-review-id="{{ review.pk }}">
-              {% csrf_token %}
-                {% if request.user in review.like_users.all %}
-                  <button id="like-{{ review.pk }}" class="btn btn-color">
-                    <i class="bi bi-hand-thumbs-up-fill"></i>
-                  </button>
-                {% else %}
-                  <button id="like-{{ review.pk }}" class="btn btn-color">
-                    <i class="bi bi-hand-thumbs-up"></i>
-                  </button>
-                {% endif %}
-            </form>
-            <span id="like-count-{{ review.pk }}">{{ review.like_users.all|length }}</span>
+          <div class="d-flex">
+            <div class="fs-8 d-flex align-items-center me-2">
+              <form method="POST" class="like-form" data-review-id="{{ review.pk }}">
+                {% csrf_token %}
+                  {% if request.user in review.like_users.all %}
+                    <button id="like-{{ review.pk }}" class="btn btn-color">
+                      <i class="bi bi-hand-thumbs-up-fill"></i>
+                    </button>
+                  {% else %}
+                    <button id="like-{{ review.pk }}" class="btn btn-color">
+                      <i class="bi bi-hand-thumbs-up"></i>
+                    </button>
+                  {% endif %}
+              </form>
+              <span id="like-count-{{ review.pk }}">{{ review.like_users.all|length }}</span>
+            </div>
+            <div class="btn btn-color">
+              <i class="bi bi-chat"></i>
+              <span class="fs-8">{{ review.comments.all|length }}</span>
+            </div>
           </div>
         </div>
       </a>

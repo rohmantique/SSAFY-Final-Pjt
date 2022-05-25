@@ -98,12 +98,10 @@ def userdelete(request):
         password_form = CheckPasswordForm(request.user, request_body)
 
         if password_form.is_valid():
-            print('되나??')
             request.user.delete()
             logout(request)
-            messages.add_message(request, messages.ERROR, '성공적으로 회원 탈퇴되었습니다! 서비스 이용을 위해 재가입해주세요')
+            messages.add_message(request, messages.ERROR, 'Your account has been successfully terminated. Bye!')
             response['status'] = True
             return JsonResponse(response)        
-        else:
-            return JsonResponse(response)
+        return JsonResponse(response)
     
