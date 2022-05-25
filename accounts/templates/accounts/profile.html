@@ -4,47 +4,78 @@
   .background {
     background: linear-gradient(#F094FF, white 20%)
   }
+
+  .ratings {
+    font-size: 14px;
+    margin-left: 7px;
+  }
+
+  .review-item, a:hover, a:focus {
+    color: #3F3F3F;
+  }
+
+  .profile-button {
+    border: none !important;
+    background: none !important;
+    color: #800083;
+  }
 {% endblock style %}
 
 {% block content %}
-<div class="p-4">
-  <h2 class="my-4">{{ person.nickname }}'s Profile</h2>
-  <div>
-    <form action="{% url 'accounts:logout' %}" method="POST">
-      {% csrf_token %}
-      <button>Logout</button>
-    </form>
-    <button><a href="{% url 'accounts:update_profile' user %}">Update My Profile</a></button>
-  </div>
-  <hr>
+  <div class="px-4 my-4">
+    <h2 class="my-4">Hello, {{ user.nickname }}.</h2>
+    <div class="d-flex justify-content-between">
+      <button class="profile-button"><a href="{% url 'accounts:update_profile' user %}">Update my profile</a></button>
+      <form action="{% url 'accounts:logout' %}" method="POST">
+        {% csrf_token %}
+        <button class="profile-button">Logout</button>
+      </form>
+    </div>
+    <hr>
+{% comment %} 
+    <div class="d-flex justify-content-between mx-5">
+      <div>
+        <p>saved</p>
+        <p style="text-align: center;">{{ user.saved.all | length }}</p> 
+      </div>
+      <div>
+        <p>rate</p>
+        <p style="text-align: center;">{{ user.review_set.all | length }}</p> 
+      </div>
+    </div> {% endcomment %}
 
-  <div class="d-flex justify-content-between mx-5">
-    <div>
-      <p>saved</p>
-      <p style="text-align: center;">{{ user.saved.all | length }}</p> 
-    </div>
-    <div>
-      <p>rate</p>
-      <p style="text-align: center;">{{ user.review_set.all | length }}</p> 
-    </div>
-  </div>
-  <hr>
-    <div>
-      Movies {{ person.nickname }} saved...<br>
-      {% for movie in user.saved.all  %}
-        <a href="{% url 'movies:detail' movie.pk %}">
-          <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" style="width:126px;" alt="포스터 이미지"> 
-        </a>
-      <br>
-      {% endfor %}
-      <br>
-      <br>
-      Reviews {{ person.nickname }} wrote...<br>
-      {% for review in user.review_set.all  %}
-        <a href="{% url 'movies:read' review.pk %}">  
-          {{ review.content }} <br>
-        </a>
-      {% endfor %}
+    <div class="profile-section mt-5">
+      <div class="saved-movies mb-5">
+        <h3 class="my-3">Your saved movies</h3>
+        <div class="row row-cols-4 px-1 gy-4">
+          {% for movie in user.saved.all  %}
+            <div>
+              <a href="{% url 'movies:detail' movie.pk %}">
+                <div class="col">
+                  <div class="card">
+                    <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="포스터 이미지"> 
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="my-reviews mb-5">
+        <h3 class="my-3">Your reviews</h3>
+        {% for review in user.review_set.all  %}
+          <a href="{% url 'movies:read' review.pk %}" class="text-decoration-none review-item mb-3">  
+            <p class="fw-bold m-0">{{ review.movie.title }}
+              <span class="ratings">
+                <i class="bi bi-star-fill"></i>
+                {{ review.score }}
+              </span>
+            </p>
+            <p>{{ review.content }}</p>
+          </a>
+        {% endfor %}
+      </div>
     </div>
   </div>
 

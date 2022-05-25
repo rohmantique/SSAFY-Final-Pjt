@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_GET, require_http_methods
 
 from .models import Movie, Review
-from .forms import ReviewForm
+from .forms import ReviewForm, Commentform
 
 # Create your views here.
 def select_mood(request):
@@ -25,22 +25,31 @@ def index(request, mood_pk):
     }
 
     # 보관함에 저장된 영화 목록
-    saved = request.user.saved.all()
+    personal = request.user.saved.all()
 
     # 리뷰를 쓴 영화 제외
     rest_movies = Movie.objects.exclude(review__user=request.user).order_by('-vote_average')
 
     data = []
-    for genre in mood[f'{mood_pk}']:
-        for movie in rest_movies:
-            if saved.filter(pk=movie.pk).exists():
+    i = 1
+    for movie in rest_movies:
+        for genre in mood[f'{mood_pk}']:
+            if personal.filter(pk=movie.pk).exists():
                 continue
             if genre in movie.genres:
-                if len(data) > 30:
+                if len(data) > 35 * i:
+                    i += 1
                     break
                 data.append(movie)
         if len(data) > 100:
             break
+
+    saved = []
+    for saved_movie in personal:
+        if Review.objects.filter(movie=saved_movie).exists():
+            continue
+        saved.append(saved_movie)
+
 
     context = {
         'saved': saved,
@@ -147,11 +156,26 @@ def create(request, movie_pk):
 
 
 def read(request, review_pk):
-    review = Review.objects.get(pk=review_pk)
+
+    review = get_object_or_404(Review, pk=review_pk)
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+    
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.review = review
+            comment.user = request.user
+            comment.save()
+            return redirect('movies:read', review.pk)
+    else:
+        comment_form = CommentForm()
 
     context = {
         'review': review,
         'review_pk': review_pk,
+        'comment_form' : comment_form,
+        'review' : review,
+        'comments' : review.comments.all()
     }
     return render(request, 'movies/read.html', context)
 

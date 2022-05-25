@@ -58,11 +58,12 @@ def logout(request):
 
 def profile(request, username):
     person = get_object_or_404(User, username=username)
-    # person = User.objects.filter(username=username)
+
     context = {
         'person': person,
     }
     return render(request, 'accounts/profile.html', context)
+
 
 def update_profile(request, username):
 
@@ -82,6 +83,7 @@ def update_profile(request, username):
         'password_form': password_form,
     }
     return render(request, 'accounts/update_profile.html', context)
+
 
 @login_required
 def userdelete(request, username):
