@@ -87,11 +87,14 @@ def detail(request, movie_pk):
 
     reviews = Review.objects.filter(movie=movie).order_by('-created_at')
 
+    already_review = movie.review_set.filter(user=request.user)
+
     context = {
         'movie': movie,
         'genre': genre,
         'total': total,
         'reviews': reviews,
+        'already_review': already_review,
     }
 
     return render(request, 'movies/detail.html', context)
@@ -171,7 +174,7 @@ def update(request, review_pk):
             movie.vote_average = round((movie.vote_average * movie.vote_count + review.score) / (movie.vote_count + 1), 1)
             movie.save()
 
-            return redirect('movies:read', review_pk)
+            return redirect('movies:detail', movie.pk)
     else:
         form = ReviewForm(instance=review)
     context = {
@@ -194,4 +197,24 @@ def delete(request, review_pk):
     
     review.delete()
     movie.save()
-    return redirect('movies:select_mood')
+    return redirect('accounts:profile', request.user.username)
+
+@require_POST
+def review_like(request, review_pk):
+
+    if request.user.is_authenticated:
+        review = get_object_or_404(Review, pk=review_pk)
+        user = request.user
+
+        response = {
+            'liked': False,
+        }
+
+        if review.like_users.filter(pk=user.pk).exists():
+            review.like_users.remove(user)
+
+        else:
+            review.like_users.add(user)
+            response['liked'] = True
+
+        return JsonResponse(response)
