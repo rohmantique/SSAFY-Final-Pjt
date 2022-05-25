@@ -19,47 +19,78 @@
     </form>
   </div>
 
-  <form action="{% url 'accounts:userdelete' user.username %}" method = 'POST'>
-    {% csrf_token %}
-    <button type="button" class="btn mybtn" style="float: right" data-bs-toggle="modal" data-bs-target="#userDeleteModal">회원탈퇴</button>
-    
-    <!-- userdelete Modal (accounts/user_delete.html)-->
-    <div class="modal fade" id="userDeleteModal" tabindex="-1" aria-labelledby="userDeleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title fw-bold" id="userDeleteModal">Wanna </h5>
-          </div>
-          
-          <div class="modal-body">
-            <p>We need your password for withdrawl</p>
-            <ul class="list-unstyled m-2 text" style="text-align: center;">
-              {% comment %} {% if error in password_form.password.errors %}
-                {{ error }}
-              {% endif %} {% endcomment %}
-            </ul>
-              
-            <form action="{% url 'accounts:userdelete' user.username %}" method="POST">
-              {% csrf_token %}
-              <div>
-                <label for="label_password" for="{{ password_form.password.id_for_label }}">{{ password_form.password.label }}</label>
-                {{ password_form.password }}
-                {% if password_form.password.erros %}
-                  {% for error in password_form.password.errors %}
-                    {{ error }}
-                  {% endfor %}
-                {% endif %}
-              </div>
-              <div class="d-flex justify-content-between mt-3">
-                <button type="button" data-bs-dismiss="modal">cancel</button>
-                <button>Leave</button>
-              </div>
-            </form>
-          </div>
+  <button id="user-delete-btn" type="button" class="btn mybtn" style="float: right" data-bs-toggle="modal" data-bs-target="#userDeleteModal">
+    회원탈퇴
+  </button>
+  
+  <!-- userdelete Modal (accounts/user_delete.html)-->
+  <div class="modal fade" id="userDeleteModal" tabindex="-1" aria-labelledby="userDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="userDeleteModal">Wanna 탈퇴?</h5>
+        </div>
+        
+        <div class="modal-body">
+          <p>We need your password for a withdrawl</p>
+          <strong><p id="error-msg"></p></strong>
+          {% comment %} <form action="{% url 'accounts:userdelete' user.username %}" method="POST"> {% endcomment %}
+          <form class="delete-form">
+            {% csrf_token %}
+            <div>
+              <label for="label_password" for="{{ password_form.password.id_for_label }}">{{ password_form.password.label }}</label>
+              {{ password_form.password }}
+              {% if password_form.password.errors %}
+                {% for error in password_form.password.errors %}
+                  {{ error }}
+                {% endfor %}
+              {% endif %}
+            </div>
+            <div class="d-flex justify-content-between mt-3">
+              <button type="button" data-bs-dismiss="modal">cancel</button>
+              <button id="delete-{{ username }}">Leave</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 
-  </form>
 {% endblock content %}
+
+{% block script %}
+<script>
+  async function onSubmit(event) {
+    event.preventDefault()
+
+    const url = `http://127.0.0.1:8000/accounts/userdelete/`
+
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+    const password = document.querySelector('.delete-form #id_password').value
+    const config = {
+      headers: {'X-CSRFToken': csrftoken},
+    }
+    const response = await axios.post(url, {password : password}, config)
+    const { status } = response.data
+    if (status){
+      window.location.href = '/accounts/signup/'
+    } else {
+      const errorMsg = document.querySelector('#error-msg')
+      errorMsg.innerText = 'Ensure your password again'
+    }
+    }
+
+  function attachEvent(form) {
+    form.addEventListener('submit', onSubmit )
+  }
+  const userDeleteBtn = document.querySelector('#user-delete-btn')
+  userDeleteBtn.addEventListener('click', () => {
+    const userDelete = document.querySelector('.delete-form')
+    attachEvent(userDelete)
+  })
+
+</script>
+{% endblock script %}
+
+
 

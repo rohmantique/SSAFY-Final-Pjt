@@ -3,14 +3,14 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_GET, require_http_methods
 
-from .models import Movie, Review
-from .forms import ReviewForm, Commentform
+from .models import Movie, Review, Comment
+from .forms import ReviewForm, CommentForm
 
 # Create your views here.
 def select_mood(request):
     return render(request, 'movies/select_mood.html')
 
-
+@login_required
 @require_GET
 def index(request, mood_pk):
 
@@ -150,11 +150,10 @@ def create(request, movie_pk):
     
     context = {
         'form': form,
-        # 'mood_pk': mood_pk,
     }
     return render(request, 'movies/create.html', context)
 
-
+@login_required
 def read(request, review_pk):
 
     review = get_object_or_404(Review, pk=review_pk)
@@ -175,10 +174,48 @@ def read(request, review_pk):
         'review_pk': review_pk,
         'comment_form' : comment_form,
         'review' : review,
-        'comments' : review.comments.all()
+        'comments' : review.comments.all(),
     }
     return render(request, 'movies/read.html', context)
 
+@login_required
+@require_http_methods(['GET', 'POST'])
+def updatecomment(request, comment_pk):
+
+    comment = Comment.objects.get(pk=comment_pk)
+    review_pk = comment.review.pk
+
+    if request.method == 'POST':
+        if request.user == comment.user:
+            form = CommentForm(request.POST, instance=comment)
+            if form.is_valid():
+                form.save()
+                return redirect('movies:read', review_pk)
+    else:
+        form = CommentForm(instance=comment)
+    context = {
+        'form': form,
+        'review_pk': review_pk,
+        'comment_pk': comment.pk,
+    }
+    return render(request, 'movies/update_comment.html', context)         
+
+        
+@login_required
+@require_http_methods(['GET', 'POST'])
+def deletecomment(request, comment_pk):
+
+    if not request.user.is_authenticated:
+        return HttpResponse('권한이 없습니다', status=401)
+
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    review_pk = comment.review.pk
+
+    if request.user == comment.user:
+        comment.delete()
+        return redirect('movies:read', review_pk)
+    else:
+        return render(request, 'movies/error.html')
 
 @login_required
 def update(request, review_pk):
@@ -221,7 +258,7 @@ def delete(request, review_pk):
     movie.save()
     return redirect('accounts:profile', request.user.username)
 
-
+@login_required
 @require_POST
 def review_like(request, review_pk):
 

@@ -27,11 +27,12 @@ class ReviewForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
     content = forms.CharField(
-        label='comment...',
+        label='',
         widget=forms.Textarea(
             attrs = {
                 'class': 'form-control',
                 'maxlength': 100,
+                'placeholder': 'Add a comment...',
             }
         )
     )
