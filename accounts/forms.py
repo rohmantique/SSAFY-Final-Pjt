@@ -72,7 +72,7 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 class CustomUserChangeForm(UserChangeForm):
     nickname = forms.CharField(
-        label='닉네임',
+        label='Nickname',
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -87,7 +87,7 @@ class CustomUserChangeForm(UserChangeForm):
 
 class CheckPasswordForm(forms.Form):
     password = forms.CharField(
-        label='비밀번호',
+        label='Password',
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control', 
