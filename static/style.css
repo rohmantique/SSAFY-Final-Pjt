@@ -91,3 +91,30 @@ nav {
 .bi-star-half, .bi-star-fill, .bi-star {
   color: rgb(255, 157, 0);
 }
+
+.save-button {
+  border: none !important;
+  background: none !important;
+  padding: 0 !important;
+  font-size: 23px;
+}
+
+.review-button {
+  font-size: 23px;
+  text-align: center;
+}
+
+.review-status {
+  font-size: 12px;
+}
+
+.save-status {
+  font-size: 12px;
+}
+
+.vl {
+  border-right: 1px solid;
+  border-color: #AAAAAA;
+  height: 40px;
+  width: 28px;
+}

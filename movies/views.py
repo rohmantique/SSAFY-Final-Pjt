@@ -108,6 +108,7 @@ def save(request, movie_pk):
 
         response = {
             'saved': False,
+            'text': 'Save this film',
         }
 
         if movie.bookmark.filter(pk=user.pk).exists():
@@ -115,6 +116,7 @@ def save(request, movie_pk):
         else:
             movie.bookmark.add(user)
             response['saved'] = True
+            response['text'] = 'Already saved'
 
         return JsonResponse(response)
     return redirect('accounts:login')
@@ -199,6 +201,7 @@ def delete(request, review_pk):
     movie.save()
     return redirect('accounts:profile', request.user.username)
 
+
 @require_POST
 def review_like(request, review_pk):
 
@@ -208,6 +211,7 @@ def review_like(request, review_pk):
 
         response = {
             'liked': False,
+            'count': 0,
         }
 
         if review.like_users.filter(pk=user.pk).exists():
@@ -217,4 +221,7 @@ def review_like(request, review_pk):
             review.like_users.add(user)
             response['liked'] = True
 
+        response['count'] = format(review.like_users.count(), ',')
+
         return JsonResponse(response)
+    return redirect('accounts:login')
