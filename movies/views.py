@@ -41,7 +41,8 @@ def index(request, mood_pk):
                 if len(data) > 35 * i:
                     i += 1
                     break
-                data.append(movie)
+                if movie not in data:
+                    data.append(movie)
         if len(data) > 100:
             break
 
