@@ -8,18 +8,6 @@ from .forms import ReviewForm
 
 # Create your views here.
 def select_mood(request):
-    # if request.method == 'POST':
-    #     form = MoodForm(request.POST)
-    #     if form.is_valid():
-    #         mood = form.save()
-    #         return redirect('movies:selected_mood', mood.pk)
-    # else:
-    #     form = MoodForm()
-
-    # context = {
-    #     'form': form,
-    # }
-    # return render(request, 'movies/select_mood.html', context)
     return render(request, 'movies/select_mood.html')
 
 
@@ -109,6 +97,7 @@ def save(request, movie_pk):
         response = {
             'saved': False,
             'text': 'Save this film',
+            'count': 0,
         }
 
         if movie.bookmark.filter(pk=user.pk).exists():
@@ -117,17 +106,23 @@ def save(request, movie_pk):
             movie.bookmark.add(user)
             response['saved'] = True
             response['text'] = 'Already saved'
-
+            
+        response['count'] = movie.bookmark.count()
         return JsonResponse(response)
     return redirect('accounts:login')
 
 
 @login_required
 def create(request, movie_pk):
+
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
+
+            # response = {
+            #     'count': 0,
+            #     }   
 
             review.user = request.user
             review.movie = Movie.objects.get(pk=movie_pk)
@@ -138,6 +133,7 @@ def create(request, movie_pk):
             movie.save()
 
             review.save()
+            # response['count'] = review.count()
 
             return redirect('movies:detail', movie_pk)
     else:
