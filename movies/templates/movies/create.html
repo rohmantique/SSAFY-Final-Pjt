@@ -6,7 +6,7 @@
   }
 
   textarea {
-    height: 50px !important;
+    height: 60px !important;
     border: none !important;
     outline: none !important;
     background-color: #F094FF !important;
@@ -14,7 +14,7 @@
 
   input {
     border: none !important;
-    width: 70px !important;
+    width: 55px !important;
     background-color: #F094FF !important;
   }
 
@@ -35,7 +35,18 @@
     <form action="" method="POST">
       {% csrf_token %}
       {{ form.as_p }}
-      <button class="btn" style="float:right">Submit</button>
+      <button class="button" style="float:right">Submit</button>
       </form>
   </div>
 {% endblock content %}
+
+{% block script %}
+  <script>
+    const content = document.querySelector('textarea#textarea')
+    const onlyEnglish = function() {
+      const pattern2 = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g
+      this.value = this.value.replace(pattern2, '')
+    }
+    content.addEventListener('keyup', onlyEnglish)
+  </script>
+{% endblock script %}

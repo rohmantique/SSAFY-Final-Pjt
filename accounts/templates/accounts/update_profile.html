@@ -2,38 +2,49 @@
 
 {% block style %}
   .background {
-    background: linear-gradient(#F094FF, white 20%)
+    background: linear-gradient(#28CBFF, white 40%, white 65%, #F094FF)
+  }
+
+  p {
+    color: #C51CC9;
+    font-size: 14px;
+    margin-top: 16px;
+    margin-bottom: 5px;
+  }
+  
+  label {
+    color: #C51CC9;
+    font-size: 14px;
   }
 {% endblock style %}
 
 {% block content %}
-  <div class="px-4 mt-4">
-    <h2 class="my-4">Update your nickname.</h2>
+  <div class="m-4">
+    <h2 class="mt-4 mb-5">Up to you!</h2>
   
-    {% comment %} <a href="{% url 'accounts:userdelete' user.username %}">회원 탈퇴</a> {% endcomment %}
-    <form action="" method="POST">
+    <form action="" method="POST" class="mt-4">
       {% csrf_token %}
       {{ form1.as_p }}
       {{ password_form.as_p }}
-      <button>수정 완료</button>
+      <div class="d-flex justify-content-between">
+        <button id="user-delete-btn" type="button" class="button" style="float: right" data-bs-toggle="modal" data-bs-target="#userDeleteModal">
+          Delete my account
+        </button>
+        <button type="submit" class="button">Confirm</button>
+      </div>
     </form>
   </div>
 
-  <button id="user-delete-btn" type="button" class="btn mybtn" style="float: right" data-bs-toggle="modal" data-bs-target="#userDeleteModal">
-    회원탈퇴
-  </button>
-  
   <!-- userdelete Modal (accounts/user_delete.html)-->
-  <div class="modal fade" id="userDeleteModal" tabindex="-1" aria-labelledby="userDeleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+  <div class="modal fade" id="userDeleteModal" aria-labelledby="userDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title fw-bold" id="userDeleteModal">Wanna 탈퇴?</h5>
+          <h3 class="modal-title fw-bold" id="userDeleteModal">Do you wish to withdraw?</h4>
         </div>
         
-        <div class="modal-body">
-          <p>We need your password for a withdrawl</p>
-          <strong><p id="error-msg"></p></strong>
+        <div class="py-2 px-2">
+          <p id="error-msg"></p>
           {% comment %} <form action="{% url 'accounts:userdelete' user.username %}" method="POST"> {% endcomment %}
           <form class="delete-form">
             {% csrf_token %}
@@ -47,49 +58,47 @@
               {% endif %}
             </div>
             <div class="d-flex justify-content-between mt-3">
-              <button type="button" data-bs-dismiss="modal">cancel</button>
-              <button id="delete-{{ username }}">Leave</button>
+              <button type="button" class="button" data-bs-dismiss="modal">Cancel</button>
+              <button id="delete-{{ username }}" class="button">Terminate</button>
             </div>
           </form>
         </div>
       </div>
     </div>
   </div>
-
 {% endblock content %}
 
 {% block script %}
-<script>
-  async function onSubmit(event) {
-    event.preventDefault()
+  <script>
+    async function onSubmit(event) {
+      event.preventDefault()
 
-    const url = `http://127.0.0.1:8000/accounts/userdelete/`
+      const url = `http://127.0.0.1:8000/accounts/userdelete/`
 
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
-    const password = document.querySelector('.delete-form #id_password').value
-    const config = {
-      headers: {'X-CSRFToken': csrftoken},
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      const password = document.querySelector('.delete-form #id_password').value
+      const config = {
+        headers: {'X-CSRFToken': csrftoken},
+      }
+      const response = await axios.post(url, {password : password}, config)
+      const { status } = response.data
+      if (status){
+        window.location.href = '/accounts/signup/'
+      } else {
+        const errorMsg = document.querySelector('#error-msg')
+        errorMsg.innerText = 'Ensure your password again'
+      }
+      }
+
+    function attachEvent(form) {
+      form.addEventListener('submit', onSubmit )
     }
-    const response = await axios.post(url, {password : password}, config)
-    const { status } = response.data
-    if (status){
-      window.location.href = '/accounts/signup/'
-    } else {
-      const errorMsg = document.querySelector('#error-msg')
-      errorMsg.innerText = 'Ensure your password again'
-    }
-    }
-
-  function attachEvent(form) {
-    form.addEventListener('submit', onSubmit )
-  }
-  const userDeleteBtn = document.querySelector('#user-delete-btn')
-  userDeleteBtn.addEventListener('click', () => {
-    const userDelete = document.querySelector('.delete-form')
-    attachEvent(userDelete)
-  })
-
-</script>
+    const userDeleteBtn = document.querySelector('#user-delete-btn')
+    userDeleteBtn.addEventListener('click', () => {
+      const userDelete = document.querySelector('.delete-form')
+      attachEvent(userDelete)
+    })
+  </script>
 {% endblock script %}
 
 

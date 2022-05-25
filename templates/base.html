@@ -24,8 +24,8 @@
   </style>
 </head>
 <body>
+  <img src="{% static 'images/iphone_13_mockup.png' %}" alt="iphone 13 mockup" class="iphone">
   <div class="background">
-    <img src="{% static 'images/iphone_13_mockup.png' %}" alt="iphone 13 mockup" class="iphone">
     <nav id="navbar" class="sticky-top">
       <div class="d-flex justify-content-between">
         <a href="{{ request.META.HTTP_REFERER }}">
@@ -46,6 +46,7 @@
     {% block content %}
     {% endblock content %}
   </div>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
