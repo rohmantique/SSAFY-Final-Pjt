@@ -17,7 +17,11 @@
   .profile-button {
     border: none !important;
     background: none !important;
-    color: #800083;
+    color: #800083 !important;
+  }
+
+  .update-font {
+    color: #800083 !important;
   }
 {% endblock style %}
 
@@ -25,7 +29,7 @@
   <div class="px-4 my-4">
     <h2 class="my-4">Hello, {{ user.nickname }}.</h2>
     <div class="d-flex justify-content-between">
-      <button class="profile-button"><a href="{% url 'accounts:update_profile' user %}">Update my profile</a></button>
+      <button class="profile-button"><a href="{% url 'accounts:update_profile' user %}" class="update-font">Update my profile</a></button>
       <form action="{% url 'accounts:logout' %}" method="POST">
         {% csrf_token %}
         <button class="profile-button">Logout</button>
