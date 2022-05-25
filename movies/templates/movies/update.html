@@ -6,7 +6,9 @@
   <form action="" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <button>Update</button>
+    <div class="container my-4 d-flex justify-content-end">
+      <button>Update</button>
+    </div>
   </form>
 
 </div>

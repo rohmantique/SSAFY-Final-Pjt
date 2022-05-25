@@ -6,9 +6,13 @@ urlpatterns = [
     # 감정 선택
     path('selectmood/', views.select_mood, name='select_mood'),
 
-    # 리뷰 작성, 수정, 삭제
+    # 리뷰 CUD
     path('create/<str:movie_pk>/', views.create, name='create'),
+    # 리뷰 R, 댓글 CRUD
     path('read/<str:review_pk>/', views.read, name='read'),
+    path('updatecomment/<str:comment_pk>/', views.updatecomment, name='updatecomment'),
+    path('deletecomment/<str:comment_pk>/', views.deletecomment, name='deletecomment'),
+    # 리뷰 UD
     path('update/<str:review_pk>/', views.update, name='update'),
     path('delete/<str:review_pk>/', views.delete, name='delete'),
 
@@ -21,10 +25,4 @@ urlpatterns = [
     # 영화 리뷰 좋아요
     path('<str:review_pk>/like/', views.review_like, name='review_like'),
 
-    # path('commentcreate/<str:review_pk>/', views.commentcreate, name='commentcreate'),
-
-    # path('commentupdate/<str:review_pk>/', views.commentupdate, name='commentupdate'),
-    # path('commentread/<str:review_pk>/', views.commentread, name='commentread'),
-    # path('commentdelete/<str:review_pk>/', views.commentdelete, name='commentdelete')
-    
 ]

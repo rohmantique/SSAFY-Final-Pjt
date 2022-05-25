@@ -3,42 +3,76 @@
 {% block content %}
 <div class="m-4">
   <h2>Reviews {{ review.user }} wrote</h2>
-  <a href="{% url 'movies:update' review_pk %}">
-    <div style="border-box;">
-      {{ review.content }} <br>
-      {{ review.score }}
-    </div>
-    <div class='container d-flex justify-content-between'>
-    <button>Edit</button>
-  </a>
-    
-    <form action="{% url 'movies:delete' review_pk %}" method="POST">
-      {% csrf_token %}
-      <button>Delete</button>
-    </form>
-    </div>
-  <h4>Comment List</h4>
-  {% if comments|length %}
-    <p>{{ comments|length }}개의 댓글이 있습니다.</p>
-  {% endif %}
-  {% for comment in comments %}
-    <div>
-      {{ comment.user }} - {{ comment.content }}
-    </div>
-  {% empty %}
-    <p>댓글이 없어요...</p>
-  {% endfor %}
-  <hr>
-  {% if request.user.is_authenticated %}
-    <form action="{% url 'movies:read' review.pk %}" method="POST">
-      {% csrf_token %}
+    <div class="container my-4 d-flex justify-content-between">
       <div>
-        {{ comment_form }}
+        {{ review.content }} 
       </div>
-    <button>Submit</button>
-    </form>
-  {% endif %}
-  
+      <div>
+        <i class="bi bi-star-fill"></i> {{ review.score }}
+      </div>
+    </div>
+    
+    <div class='container d-flex justify-content-between'>
+      {% if request.user == review.user %}
+      <a href="{% url 'movies:update' review_pk %}">
+        <button>Edit</button>
+      </a>
+      <form action="{% url 'movies:delete' review_pk %}" method="POST">
+        {% csrf_token %}
+        <button>Delete</button>
+      </form>
+        {% endif %}
+    </div>
+    <hr>
+    <!-- 댓글 개수 출력 -->
+    {% if comments|length %}
+      {% if comments|length == 1 %}
+        <p>View {{ comments|length }} comment</p>
+      {% else %}
+        <p>View all {{ comments|length }} comments</p>
+      {% endif %}
+    {% endif %}
+    <hr>
+    <!-- 댓글 출력 -->
+    {% for comment in comments %}
+      <div class="d-flex justify-content-between">
+        <div>
+          <strong>{{ comment.user }}</strong> {{ comment.content }}
+        </div>
+        <div>
+          <p style="font-size: 12px;">{{ comment.updated_at | date:"Y.m.d H:i" }}</p>
+        </div>
+      </div>
+
+      {% if request.user == comment.user %}
+      <div class="container my-4 d-flex justify-content-between">
+      <a href="{% url 'movies:updatecomment' comment.pk %}">
+        <button>Edit</button>
+      </a>
+      <form action="{% url 'movies:deletecomment' comment.pk %}" method="POST">
+        {% csrf_token %}
+        <button>Delete</button>
+      </form>
+      {% endif %}
+      </div>
+
+      {% empty %}
+      <p>0 Comment</p>
+    {% endfor %}
+    <hr>
+    <!-- 댓글 작성 -->
+    {% if request.user.is_authenticated %}
+      <form action="{% url 'movies:read' review.pk %}" method="POST">
+        {% csrf_token %}
+        <div>
+          {{ comment_form }}
+        </div>
+        <div class="container my-4 d-flex justify-content-end">
+          <button>Write</button>
+        </div>
+      </form>
+    {% endif %}
+    
 </div>
 {% endblock content %}
 

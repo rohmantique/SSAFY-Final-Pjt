@@ -15,6 +15,7 @@ from .forms import (
     CustomUserChangeForm,
     CheckPasswordForm,
     )
+import json
 
 # Create your views here.
 def signup(request):
@@ -50,12 +51,12 @@ def login(request):
     }
     return render(request, 'accounts/login.html', context)
 
-
+@login_required
 def logout(request):
     auth_logout(request)
     return redirect('accounts:login')
 
-
+@login_required
 def profile(request, username):
     person = get_object_or_404(User, username=username)
 
@@ -64,7 +65,7 @@ def profile(request, username):
     }
     return render(request, 'accounts/profile.html', context)
 
-
+@login_required
 def update_profile(request, username):
 
     if request.method == 'POST':
@@ -86,21 +87,23 @@ def update_profile(request, username):
 
 
 @login_required
-def userdelete(request, username):
-
+def userdelete(request):
+    response = {
+        'status': False,
+    }
+    request_body = request.body.decode('utf-8')
+    request_body = json.loads(request_body)
+    print(request_body)
     if request.method == 'POST':
-        password_form = CheckPasswordForm(request.user, request.POST)
+        password_form = CheckPasswordForm(request.user, request_body)
 
         if password_form.is_valid():
+            print('되나??')
             request.user.delete()
             logout(request)
             messages.add_message(request, messages.ERROR, '성공적으로 회원 탈퇴되었습니다! 서비스 이용을 위해 재가입해주세요')
-            return redirect('accounts:signup')
-    else:
-        password_form = CheckPasswordForm(request.user)
-
-    context = {
-        'password_form': password_form,
-        'username': username,
-    }
-    return render(request, 'accounts/update_profile.html', context)
+            response['status'] = True
+            return JsonResponse(response)        
+        else:
+            return JsonResponse(response)
+    
