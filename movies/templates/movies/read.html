@@ -1,80 +1,185 @@
 {% extends 'base.html' %}
 
 {% block style %}
-.background {
-  background: linear-gradient(#28CBFF, white 30%)
-}
+  .background {
+    background: linear-gradient(#28CBFF, white 30%)
+  }
 
-.area {
-  word-wrap: break-word !important;
-  word-break: break-word !important;
-}
+  .area {
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+  }
 
-button {
-  color: black !important;
-}
+  .review-score {
+    color: #747474;
+    font-size: 13px;
+    font-weight: bold;
+  }
 
+  .review-created {
+    font-size: 10px;
+    color: #747474;
+  }
+
+  .review-writer {
+    font-size: 15px;
+    color: #747474;
+    font-weight: bold;
+  }
+
+  .review-content {
+    font-size: 16px;
+    color: #3F3F3F;
+    margin: 6px 0 2px 0;
+  }
+
+  .btn-color {
+    color: #3F3F3F !important;
+    padding-right: 2px;
+  }
 {% endblock style %}
 
 {% block content %}
-<div class="m-4">
-  <h2>Reviews {{ review.user }} wrote</h2>
-    <div class="container my-4 d-flex justify-content-between">
-      <div>
-        {{ review.content }} 
+  <div class="p-4">
+    <div class="review-section mt-4">
+      <div class="d-flex justify-content-between">
+        <div class="review-score">
+          {% if review.score == 1 %}
+            <i class="bi bi-star-half"></i>
+            <i class="bi bi-star"></i>
+            <i class="bi bi-star"></i>
+            <i class="bi bi-star"></i>
+            <i class="bi bi-star"></i>
+            {{ review.score }}
+          {% elif review.score == 2 %}
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star"></i>
+            <i class="bi bi-star"></i>
+            <i class="bi bi-star"></i>
+            <i class="bi bi-star"></i>
+            {{ review.score }}
+          {% elif review.score == 3 %}
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-half"></i>
+            <i class="bi bi-star"></i>
+            <i class="bi bi-star"></i>
+            <i class="bi bi-star"></i>
+            {{ review.score }}
+          {% elif review.score == 4 %}
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star"></i>
+            <i class="bi bi-star"></i>
+            <i class="bi bi-star"></i>              
+            {{ review.score }}
+          {% elif review.score == 5 %}
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-half"></i>
+            <i class="bi bi-star"></i>
+            <i class="bi bi-star"></i>      
+            {{ review.score }}
+          {% elif review.score == 6 %}
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star"></i>
+            <i class="bi bi-star"></i>
+            {{ review.score }}      
+          {% elif review.score == 7 %}
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-half"></i>   
+            <i class="bi bi-star"></i>         
+            {{ review.score }}
+          {% elif review.score == 8 %}
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star"></i>
+            {{ review.score }}
+          {% elif review.score == 9 %}
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-half"></i>
+            {{ review.score }}
+          {% else %}
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            {{ review.score }}
+          {% endif %}
+        </div>
+        <div>
+          <div class="d-flex align-items-baseline">
+            <div class="review-created me-2">
+              {{ review.updated_at|date:"Y-m-d" }}
+              {% if review.created_at != review.updated_at %}
+                (edited)
+              {% endif %}
+            </div>
+            <div class="review-writer d-flex">
+              {{ review.user.nickname }}
+              {% if request.user == review.user %}
+                <a href="{% url 'movies:update' review_pk %}">
+                  <button class="button btn-color"><i class="bi bi-pencil"></i></button>
+                </a>
+                <form action="{% url 'movies:delete' review_pk %}" method="POST">
+                  {% csrf_token %}
+                  <button class="button btn-color"><i class="bi bi-trash"></i></button>
+                </form>
+              {% endif %}            
+            </div>
+          </div>          
+        </div>
       </div>
-      <div>
-        <i class="bi bi-star-fill"></i> {{ review.score }}
-      </div>
-    </div>
-    
-    <div class='container d-flex justify-content-between'>
-      {% if request.user == review.user %}
-      <a href="{% url 'movies:update' review_pk %}">
-        <button class="button"><i class="bi bi-pencil"></i></button>
-      </a>
-      <form action="{% url 'movies:delete' review_pk %}" method="POST">
-        {% csrf_token %}
-        <button class="button"><i class="bi bi-trash"></i></button>
-      </form>
-        {% endif %}
+      <div class="review-content">{{ review.content }}</div>
     </div>
     <hr>
+
     <!-- 댓글 개수 출력 -->
-    <div>
-      {% if comments|length %}
-        {% if comments|length == 1 %}
-          <p>View {{ comments|length }} comment</p>
-        {% else %}
-          <p>View all {{ comments|length }} comments</p>
-        {% endif %}
+    {% if comments|length %}
+      {% if comments|length == 1 %}
+        <div class="comments">View {{ comments|length }} comment</div>
+        <hr>
       {% else %}
-        <p>0 Comment</p>
+        <div class="comments">View all {{ comments|length }} comments</div>
+        <hr>
       {% endif %}
-    </div>
+    {% else %}
+      <div class="comments">0 comment</div>
+    {% endif %}
+
     <!-- 댓글 출력 -->
     {% for comment in comments %}
-      <div class="p-2 ">
-        <div class="d-flex justify-content-between">
-          <div class="area">
-            <strong>{{ comment.user }}</strong> {{ comment.content }}
-          </div>
-          <div>
-            <p style="font-size: 12px;">{{ comment.updated_at | date:"Y.m.d H:i" }}</p>
+      <div class="area mb-3">
+        <div class="d-flex justify-content-between" >
+          <div style="font-weight: bold; font-size: 14px; color: #3F3F3F;">{{ comment.user }}</div>
+          <div style="font-size: 12px; color: #747474;" class="d-flex">
+            {{ comment.updated_at|date:"Y-m-d H:i" }}
+            {% if comment.created_at != comment.updated_at %}
+              (edited)
+            {% endif %}
+            {% if request.user == comment.user %}
+              <div class="d-flex">
+                <a href="{% url 'movies:updatecomment' comment.pk %}">
+                  <button class="button btn-color"><i class="bi bi-pencil"></i></button>
+                </a>
+                <form action="{% url 'movies:deletecomment' comment.pk %}" method="POST">
+                  {% csrf_token %}
+                  <button class="button btn-color"><i class="bi bi-trash"></i></button>
+                </form>
+              </div>
+            {% endif %}          
           </div>
         </div>
-
-        {% if request.user == comment.user %}
-          <div class="container my-4 d-flex justify-content-between">
-            <a href="{% url 'movies:updatecomment' comment.pk %}">
-              <button class="button"><i class="bi bi-pencil"></i></button>
-            </a>
-            <form action="{% url 'movies:deletecomment' comment.pk %}" method="POST">
-              {% csrf_token %}
-              <button class="button"><i class="bi bi-trash"></i></button>
-            </form>
-          </div>
-        {% endif %}
+        <div style="color: #3F3F3F; font-size: 15px;">{{ comment.content }}</div>
       </div>
     {% endfor %}
     <hr>
@@ -94,7 +199,6 @@ button {
         </form>
       {% endif %}
     </div>
-    
-</div>
+  </div>
 {% endblock content %}
 

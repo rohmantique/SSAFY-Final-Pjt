@@ -29,28 +29,25 @@
   <div class="px-4 my-4">
     <h2 class="my-4">Hello, {{ user.nickname }}.</h2>
     <div class="d-flex justify-content-between">
-      <button class="profile-button"><a href="{% url 'accounts:update_profile' user %}" class="update-font">Update my profile</a></button>
+      <button class="profile-button p-0"><a href="{% url 'accounts:update_profile' user %}" class="update-font">Update my profile</a></button>
       <form action="{% url 'accounts:logout' %}" method="POST">
         {% csrf_token %}
         <button class="profile-button">Logout</button>
       </form>
     </div>
     <hr>
-{% comment %} 
-    <div class="d-flex justify-content-between mx-5">
-      <div>
-        <p>saved</p>
-        <p style="text-align: center;">{{ user.saved.all | length }}</p> 
-      </div>
-      <div>
-        <p>rate</p>
-        <p style="text-align: center;">{{ user.review_set.all | length }}</p> 
-      </div>
-    </div> {% endcomment %}
 
-    <div class="profile-section mt-5">
+    <div class="profile-section py-2">
       <div class="saved-movies mb-5">
-        <h3 class="my-3">Your saved movies</h3>
+        <h3 class="my-2">Your saved movies</h3>
+        <div style="font-size: 12px; color: #747474;" class="mb-3">
+          There are total {{ user.saved.all | length }}
+          {% if user.saved.all|length > 1 %}
+            saved movies.
+          {% else %}
+            saved movie.
+          {% endif %}
+        </div>
         <div class="row row-cols-4 px-1 gy-4">
           {% for movie in user.saved.all  %}
             <div>
@@ -67,16 +64,24 @@
       </div>
 
       <div class="my-reviews mb-5">
-        <h3 class="my-3">Your reviews</h3>
+        <h3 class="mt-3 mb-2">Your reviews</h3>
+        <div style="font-size: 12px; color: #747474;" class="mb-3">
+          There are total {{ user.review_set.all | length }}
+          {% if user.saved.all|length > 1 %}
+            reviews.
+          {% else %}
+            review.
+          {% endif %}
+        </div>
         {% for review in user.review_set.all  %}
           <a href="{% url 'movies:read' review.pk %}" class="text-decoration-none review-item mb-3">  
-            <p class="fw-bold m-0">{{ review.movie.title }}
+            <p class="fw-bold m-0" style="font-size: 15px;">{{ review.movie.title }}
               <span class="ratings">
                 <i class="bi bi-star-fill"></i>
                 {{ review.score }}
               </span>
             </p>
-            <p>{{ review.content }}</p>
+            <p style="font-size: 14px; color: #747474;">{{ review.content }}</p>
           </a>
         {% endfor %}
       </div>

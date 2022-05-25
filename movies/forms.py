@@ -7,7 +7,8 @@ class ReviewForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs = {
                 'class': 'form-control',
-                'maxlength': 70,
+                'maxlength': 100,
+                'id': 'textarea',
             }
         )
     )
@@ -28,7 +29,7 @@ class ReviewForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     content = forms.CharField(
         label='',
-        widget=forms.TextInput(
+        widget=forms.Textarea(
             attrs = {
                 'class': 'form-control',
                 'maxlength': 100,

@@ -100,7 +100,7 @@ nav {
 }
 
 input {
-  height: 24px;
+  height: 28px;
   border: none !important;
   background: #F094FF !important;
   font-size: 14px !important;
@@ -130,4 +130,16 @@ input {
 
 .nav-icons {
   padding: 0 3px 0 15px !important;
+}
+
+.comments {
+  color: #3F3F3F;
+  font-size: 14px;
+}
+
+textarea {
+  height: 85px !important;
+  border: none !important;
+  outline: none !important;
+  background-color: #F094FF !important;
 }

@@ -130,10 +130,6 @@ def create(request, movie_pk):
         if form.is_valid():
             review = form.save(commit=False)
 
-            # response = {
-            #     'count': 0,
-            #     }   
-
             review.user = request.user
             review.movie = Movie.objects.get(pk=movie_pk)
 
@@ -143,7 +139,6 @@ def create(request, movie_pk):
             movie.save()
 
             review.save()
-            # response['count'] = review.count()
 
             return redirect('movies:detail', movie_pk)
     else:

@@ -1,17 +1,36 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<div class="px-4 my-4">
-  <h2>리뷰 수정 페이지</h2>
-  <form action="" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <div class="container my-4 d-flex justify-content-end">
-      <button>Update</button>
-    </div>
-  </form>
+{% block style %}
+  .background {
+    background: linear-gradient(#28CBFF, white 40%, white 65%, #F094FF)
+  }
 
-</div>
+  input {
+    width: 55px !important;
+  }
+
+  label {
+    color: #C51CC9;
+  }
+
+  button {
+    color: #800083 !important;
+    padding: 0 10px !important;
+  }
+{% endblock style %}
+
+{% block content %}
+  <div class="p-4">
+    <h2 class="mt-2 mb-5">Edit your review.</h2>
+    <form action="" method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="container my-4 d-flex justify-content-end">
+        <button class="button" style="float:right">Update</button>
+      </div>
+    </form>
+
+  </div>
 {% endblock content %}
 
 
