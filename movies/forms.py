@@ -7,7 +7,7 @@ class ReviewForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs = {
                 'class': 'form-control',
-                'maxlength': 60,
+                'maxlength': 70,
             }
         )
     )
