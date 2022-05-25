@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_GET, require_http_methods
 
+
 from .models import Movie, Review, Comment
 from .forms import ReviewForm, CommentForm
 
@@ -49,7 +50,6 @@ def index(request, mood_pk):
         if Review.objects.filter(movie=saved_movie).exists():
             continue
         saved.append(saved_movie)
-
 
     context = {
         'saved': saved,
