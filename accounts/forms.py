@@ -100,6 +100,7 @@ class CheckPasswordForm(forms.Form):
 
     def clean(self): #clean 메서드로 form에 입력된 password값과 init으로 생성된 현재 사용자의 password 값을 check_password 통해 비교
         cleaned_data = super().clean()
+        print(cleaned_data)
         password = cleaned_data.get('password')
         confirm_password = self.user.password
 
