@@ -39,6 +39,8 @@ def index(request, mood_pk):
             if genre in movie.genres:
                 if movie not in data:
                     data.append(movie)
+            if len(data) == 100:
+                break
         if len(data) == 100:
             break
 
