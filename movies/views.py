@@ -50,7 +50,9 @@ def index(request, mood_pk):
     for saved_movie in personal:
         if Review.objects.filter(movie=saved_movie).exists():
             continue
-        saved.append(saved_movie)
+        for genre in mood[f'{mood_pk}']:
+            if genre in saved_movie.genres:
+                saved.append(saved_movie)
 
     context = {
         'saved': saved,
