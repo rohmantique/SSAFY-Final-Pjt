@@ -178,7 +178,7 @@
     {% for comment in comments %}
       <div class="area mb-3">
         <div class="d-flex justify-content-between" >
-          <div style="font-weight: bold; font-size: 14px; color: #3F3F3F;">{{ comment.user }}</div>
+          <div style="font-weight: bold; font-size: 14px; color: #3F3F3F;">{{ comment.user.nickname }}</div>
           <div style="font-size: 12px; color: #747474;" class="d-flex">
             {{ comment.updated_at|date:"Y-m-d H:i" }}
             {% if comment.created_at != comment.updated_at %}
