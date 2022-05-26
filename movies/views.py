@@ -32,27 +32,24 @@ def index(request, mood_pk):
     rest_movies = Movie.objects.exclude(review__user=request.user).order_by('-vote_average')
 
     data = []
-    i = 1
     for movie in rest_movies:
         for genre in mood[f'{mood_pk}']:
             if personal.filter(pk=movie.pk).exists():
                 continue
             if genre in movie.genres:
-                if len(data) > 35 * i:
-                    i += 1
-                    break
                 if movie not in data:
                     data.append(movie)
-        if len(data) > 100:
+        if len(data) == 100:
             break
 
     saved = []
     for saved_movie in personal:
-        if Review.objects.filter(movie=saved_movie).exists():
+        if saved_movie in Movie.objects.filter(review__user=request.user):
             continue
         for genre in mood[f'{mood_pk}']:
             if genre in saved_movie.genres:
-                saved.append(saved_movie)
+                if not saved_movie in saved:
+                    saved.append(saved_movie)
 
     context = {
         'saved': saved,

@@ -27,6 +27,11 @@ h3 {
   border: none !important;
 }
 
+body::-webkit-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  display: none; /* Chrome, Safari, Opera*/
+}
+
 .background {
   width: 375px;
   height: 803px;
