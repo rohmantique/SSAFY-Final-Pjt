@@ -48,7 +48,10 @@
       <form action="" method="POST" class="form-width-control">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="button" style="float:right;">Confrim</button>
+        <div>
+          <a href="{% url 'accounts:login' %}" class="button">Back</a>
+          <button type="submit" class="button" style="float:right;">Confrim</button>
+        </div>
       </form>
     </div>
   </div>
