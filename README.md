@@ -267,7 +267,7 @@ def index(request, mood_pk):
 
 ### 2.  영화별 리뷰, 리뷰에 대한 댓글 작성 가능
 
-<img src="README.assets/영화리뷰작성.png" alt="영화리뷰작성" style="zoom: 80%;" />
+<img src="README.assets/영화리뷰작성.png" alt="영화리뷰작성" style="zoom: 50%;" />
 
 #### 1) 영화 리뷰 작성 함수
 
@@ -308,7 +308,7 @@ def create(request, movie_pk):
 
 #### 2) 영화 리뷰에 대한 댓글 작성, 조회 함수 
 
-<img src="README.assets/리뷰에대한댓글.png" alt="리뷰에대한댓글" style="zoom: 80%;" />
+<img src="README.assets/리뷰에대한댓글.png" alt="리뷰에대한댓글" style="zoom: 50%;" />
 
 ```python
 @login_required
@@ -350,7 +350,7 @@ def read(request, review_pk):
 
 ### 4. 영화별 북마크가 가능
 
-<img src="README.assets/영화저장목록.png" alt="영화저장목록" style="zoom: 80%;" />
+<img src="README.assets/영화저장목록.png" alt="영화저장목록" style="zoom: 50%;" />
 
 ```python
 @require_POST
