@@ -196,6 +196,8 @@ class Comment(models.Model):
 
 ### 1. 추천 알고리즘
 
+<img src="README.assets/무드선택.png" alt="무드선택" style="zoom: 50%;" />	<img src="README.assets/감정선택시_상세페이지.png" alt="감정선택시_상세페이지" style="zoom: 50%;" />
+
 ```python
 @login_required
 @require_GET
@@ -265,6 +267,8 @@ def index(request, mood_pk):
 
 ### 2.  영화별 리뷰, 리뷰에 대한 댓글 작성 가능
 
+<img src="README.assets/영화리뷰작성.png" alt="영화리뷰작성" style="zoom: 80%;" />
+
 #### 1) 영화 리뷰 작성 함수
 
 ```python
@@ -303,6 +307,8 @@ def create(request, movie_pk):
   
 
 #### 2) 영화 리뷰에 대한 댓글 작성, 조회 함수 
+
+<img src="README.assets/리뷰에대한댓글.png" alt="리뷰에대한댓글" style="zoom: 80%;" />
 
 ```python
 @login_required
@@ -343,6 +349,8 @@ def read(request, review_pk):
 (코드 참조 안함)
 
 ### 4. 영화별 북마크가 가능
+
+<img src="README.assets/영화저장목록.png" alt="영화저장목록" style="zoom: 80%;" />
 
 ```python
 @require_POST
