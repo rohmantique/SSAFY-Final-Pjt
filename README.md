@@ -401,7 +401,7 @@ def review_like(request, review_pk):
 
         response['count'] = format(review.like_users.count(), ',')
 
-        return JsonResponse(response)ㄴ
+        return JsonResponse(response)
     return redirect('accounts:login')
 
 ```
