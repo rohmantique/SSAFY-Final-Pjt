@@ -42,7 +42,7 @@ Git, Github, MatterMost, Notion, Discord
 
 ## ERD
 
-
+<img src="README.assets/moodinside_ERD-16554060706061.png" alt="moodinside_ERD" style="zoom:75%;" />
 
 
 
