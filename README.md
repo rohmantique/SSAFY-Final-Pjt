@@ -64,6 +64,14 @@ Git, Github, MatterMost, Notion, Discord
 - 댓글 작성/조회/수정/삭제
 - 리뷰에 좋아요 누르기
 
+### 서비스 시연 영상
+
+https://www.youtube.com/watch?v=FsRoiS79K7s
+
+
+
+
+
 
 
 
