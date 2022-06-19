@@ -71,8 +71,8 @@ Git, Github, MatterMost, Notion, Discord
 
 ## Demo
 
+[![moodinside_thumbnail_final](https://user-images.githubusercontent.com/89441476/174478385-abd6a005-4f5f-4379-8786-88012d5602ac.png)](https://youtu.be/FsRoiS79K7s)
 
-[![moodinside_thumbnail](https://user-images.githubusercontent.com/89441476/174478302-8dfb1d84-4707-44c6-bc84-313255f8228b.png)](https://youtu.be/FsRoiS79K7s)
 
 
 
