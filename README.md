@@ -72,9 +72,7 @@ Git, Github, MatterMost, Notion, Discord
 ## Demo
 
 
-
-[! [미리보기] (https://img.youtube.com/vi/FsRoiS79K7s/0.jpg) (https://www.youtube.com/watch?v=FsRoiS79K7s)
-
+![moodinside_thumbnail](https://user-images.githubusercontent.com/89441476/174478302-8dfb1d84-4707-44c6-bc84-313255f8228b.png)(https://youtu.be/FsRoiS79K7s)
 
 
 
