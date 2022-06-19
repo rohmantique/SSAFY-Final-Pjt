@@ -70,7 +70,9 @@ Git, Github, MatterMost, Notion, Discord
 
 
 
-[! [미리보기] (https://img.youtube.com/vi/FsRoiS79K7s.jpg) (https://www.youtube.com/watch?v=FsRoiS79K7s)
+[! [미리보기] (https://img.youtube.com/vi/FsRoiS79K7s/0.jpg) (https://www.youtube.com/watch?v=FsRoiS79K7s)
+
+
 
 
 
