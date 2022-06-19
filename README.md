@@ -4,7 +4,7 @@
 
 ## 개발 기간
 
-2022.05.20 ~ 05.26
+2022.05.22 ~ 05.26 (5일)
 
 
 
@@ -42,7 +42,7 @@ Git, Github, MatterMost, Notion, Discord
 
 ## ERD
 
-<img src="README.assets/moodinside_ERD-16554060706061.png" alt="moodinside_ERD" style="zoom:75%;" />
+<img src="README.assets/moodinside_erd_final.png" alt="moodinside_erd_final" style="zoom:80%;" />
 
 
 
@@ -64,9 +64,13 @@ Git, Github, MatterMost, Notion, Discord
 - 댓글 작성/조회/수정/삭제
 - 리뷰에 좋아요 누르기
 
-### 서비스 시연 영상
 
-https://www.youtube.com/watch?v=FsRoiS79K7s
+
+## Demo
+
+
+
+[! [미리보기](https://img.www.youtube.com/vi/FsRoiS79K7s.jpg)] (https://www.youtube.com/watch?v=FsRoiS79K7s)
 
 
 
