@@ -87,7 +87,7 @@ Git, Github, MatterMost, Notion, Discord
 
 ## 코드에 대하여
 
-- FrontEnd: 
+- FrontEnd: (업데이트 예정)
 - BackEnd: https://obtainable-cake-1bd.notion.site/BE-156b8ee518344178b6644ea1bbc925ec
 
 
